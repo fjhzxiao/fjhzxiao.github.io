@@ -5,16 +5,19 @@
   
 
   
-  <title>Hzx8964&#39;Blog</title>
+  <title>UReport2 自定义存储器无效 | Hzx8964&#39;Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Java">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Hzx8964&#39;Blog">
-<meta property="og:url" content="http://example.com/index.html">
+  <meta name="description" content="定义一个内存存储器1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374package com.hzxiao.third.ureport2.file;import com.bs">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UReport2 自定义存储器无效">
+<meta property="og:url" content="http://example.com/2021/04/16/UReport2%20Note1/index.html">
 <meta property="og:site_name" content="Hzx8964&#39;Blog">
-<meta property="og:description" content="Java">
+<meta property="og:description" content="定义一个内存存储器1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374package com.hzxiao.third.ureport2.file;import com.bs">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-04-16T01:24:38.000Z">
+<meta property="article:modified_time" content="2021-04-16T01:44:45.837Z">
 <meta property="article:author" content="hzx">
+<meta property="article:tag" content="ureport2">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternate" href="/atom.xml" title="Hzx8964&#39;Blog" type="application/atom+xml">
@@ -64,175 +67,7 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-    <article id="Kettle-Kettle Synchronize after merge" class="article article-type-Kettle" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/04/27/Kettle%20Synchronize%20after%20merge/" class="article-date">
-  <time datetime="2021-04-27T09:03:38.000Z" itemprop="datePublished">2021-04-27</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Kettle/">Kettle</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/04/27/Kettle%20Synchronize%20after%20merge/">Kettle数据同步(Kettle Synchronize after merge)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Kettle 数据同步</p>
-<p>同步的概念，原数据表（数据变化，新增，修改，删除），目标数据表（数据不变化），经过kettle处理，保持目标数据表与原数据表一致。</p>
-<p>1、新建数据表 user_source, user_target   </p>
-<p>id作为主键，其他字段若干</p>
-<p>2、Kettle 拖入两个 Table Input，修改名称为 Source， Target</p>
-<p><img src="/img/image-20210427111123181.png" alt="image-20210427111123181"></p>
-<p>配置数据库连接地址，编写SQL，分别查询 user_source, user_target   </p>
-<p>3、拖入合并（比较）</p>
-<p>从Joins 拖入 Merge rows（diff）</p>
-<p>![image-20210427112308832](E:\GitHub\hzx8964’blog\source_posts\Kettle Synchronize after merge\image-20210427112308832.png)</p>
-<p>注意： 原始数据，以及对比数据，不能弄错。</p>
-<p>Reference rows origin 需要被同步的表</p>
-<p>Compare rows origin 会变更数据的原始表</p>
-<p>Flag fieldname 系统默认，添加数据差异字段（identical， new，changed， deleted）不要修改</p>
-<p>Keys to match 比较数据是否相同的字段</p>
-<p>Values to compare 需要更新的字段</p>
-<p><img src="/img/image-20210427111732584.png" alt="image-20210427111732584"></p>
-<p>添加日志可以查看合并后的数据</p>
-<p>4、同步数据</p>
-<p>拖入 Synchronize after merge 连接 Merge rows</p>
-<p><img src="/img/image-20210427111903879.png" alt="image-20210427111903879"></p>
-<p>配置同步</p>
-<p>General 基本配置</p>
-<p><img src="/img/image-20210427112107717.png" alt="image-20210427112107717"></p>
-<p>Advanced</p>
-<p><img src="/img/image-20210427111955219.png" alt="image-20210427111955219"></p>
-<p>配置完成，即可执行。</p>
-<p>测试，修改  user_source  里面的任意数据，执行 Kettle 转换，user_target 数据会修改，与 user_source 同步。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2021/04/27/Kettle%20Synchronize%20after%20merge/" data-id="cknzgvyqy0000xse59w3y8bjp" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Kettle/" rel="tag">Kettle</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="Kettle-Kettle InputUpdate" class="article article-type-Kettle" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/04/27/Kettle%20InputUpdate/" class="article-date">
-  <time datetime="2021-04-27T09:03:38.000Z" itemprop="datePublished">2021-04-27</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Kettle/">Kettle</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/04/27/Kettle%20InputUpdate/">Kettle 插入/更新(Kettle Insert/Update)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Kettle Input/Update</p>
-<p>插入与更新，判断目标数据与原数据一致，强制更新。</p>
-<p>与同步最大的区别是，原数据如果删除，目标数据不会删除。</p>
-<p>1、自行创建 source,target 表</p>
-<p>2、拖入 TableInput 配置数据库连接，SQL</p>
-<p><img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20210427114151451.png" alt="image-20210427114151451"></p>
-<p>3、拖入 Input/Update</p>
-<p><img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20210427114146642.png" alt="image-20210427114146642"></p>
-<p>4、执行 Kettle发现，source，target 保持一致，source删除，target并不会删除</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2021/04/27/Kettle%20InputUpdate/" data-id="cknzhbfn70008xse5dq3rdxpu" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Kettle/" rel="tag">Kettle</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="helloworld-HelloWorld Hexo" class="article article-type-helloworld" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/04/19/HelloWorld%20Hexo/" class="article-date">
-  <time datetime="2021-04-19T08:06:38.000Z" itemprop="datePublished">2021-04-19</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/kettle/">kettle</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/04/19/HelloWorld%20Hexo/">HelloWorld Kettle</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Empty</span><br></pre></td></tr></table></figure>
-
-<p>111</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2021/04/19/HelloWorld%20Hexo/" data-id="ckni9kq6v0008yce5cj7a802n" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kettle/" rel="tag">kettle</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="java-UReport2 Note1" class="article article-type-java" itemscope itemprop="blogPost">
+        <section id="main"><article id="java-UReport2 Note1" class="article article-type-java" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2021/04/16/UReport2%20Note1/" class="article-date">
   <time datetime="2021-04-16T01:24:38.000Z" itemprop="datePublished">2021-04-16</time>
@@ -249,8 +84,8 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/04/16/UReport2%20Note1/">UReport2 自定义存储器无效</a>
+    <h1 class="article-title" itemprop="name">
+      UReport2 自定义存储器无效
     </h1>
   
 
@@ -276,162 +111,28 @@
     </footer>
   </div>
   
-</article>
-
-
+    
+<nav id="article-nav">
   
-    <article id="java-UReport2" class="article article-type-java" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/04/14/UReport2/" class="article-date">
-  <time datetime="2021-04-14T09:03:38.000Z" itemprop="datePublished">2021-04-14</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/ureport2/">ureport2</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
+    <a href="/2021/04/19/HelloWorld%20Hexo/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
         
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/04/14/UReport2/">UReport2</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>QuickStart</p>
-<ol>
-<li><p>Springboot快速搭建一个web后台</p>
-</li>
-<li><p>Maven引入包</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.bstek.ureport<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>ureport2-console<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.2.9<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
-<li><p>SpringBoot配置Servlet</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Carrot</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span> 2021/04/15</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Order</span></span><br><span class="line"><span class="meta">@Configuration(proxyBeanMethods = false)</span></span><br><span class="line"><span class="meta">@ImportResource(&quot;classpath:ureport-console-context.xml&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UReport2Configuration</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ServletRegistrationBean&lt;Servlet&gt; <span class="title">registrationBean</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ServletRegistrationBean&lt;&gt;(<span class="keyword">new</span> UReportServlet(), <span class="string">&quot;/ureport/*&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>启动，访问</p>
-<p>浏览器 <a target="_blank" rel="noopener" href="http://127.0.0.1:8080/ureport/designer">http://127.0.0.1:8080/ureport/designer</a> 访问表单设计</p>
-</li>
-</ol>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2021/04/14/UReport2/" data-id="ckniaifgo0003e0e52k2g4ttn" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ureport2/" rel="tag">ureport2</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="NodeJs-HelloWorld NodeJs" class="article article-type-NodeJs" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/04/14/HelloWorld%20NodeJs/" class="article-date">
-  <time datetime="2021-04-14T02:24:23.000Z" itemprop="datePublished">2021-04-14</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
+          HelloWorld Kettle
         
+      </div>
+    </a>
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/04/14/HelloWorld%20NodeJs/">HelloWorld NodeJs</a>
-    </h1>
   
+    <a href="/2021/04/14/UReport2/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">UReport2</div>
+    </a>
+  
+</nav>
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>NodeJs 入门</p>
-<ol>
-<li><h6 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h6></li>
-<li><p>安装</p>
-</li>
-<li><p>常见问题</p>
-<p>npm install</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">audited 131 packages in 5.605s</span><br><span class="line">found 8 vulnerabilities (4 low, 4 high)</span><br><span class="line">  run &#96;npm audit fix&#96; to fix them, or &#96;npm audit&#96; for details</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>原因：</p>
-<p>解决：</p>
-</li>
-</ol>
-<p>Node包管理工具</p>
-<p>Npm( Node Package Manage )</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2021/04/14/HelloWorld%20NodeJs/" data-id="ckni9kk3m0006yce5cgyh5ewg" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/NodeJs/" rel="tag">NodeJs</a></li></ul>
-
-    </footer>
-  </div>
   
 </article>
-
-
-  
-    <article id="helloworld-Kettyle" class="article article-type-helloworld" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/04/01/Kettyle/" class="article-date">
-  <time datetime="2021-04-01T09:03:38.000Z" itemprop="datePublished">2021-04-01</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/hexo/">hexo</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/04/01/Kettyle/">HelloWorld Hexo</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Empty</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2021/04/01/Kettyle/" data-id="ckns820jb000470e5gt89bfwl" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-
 
 </section>
         
