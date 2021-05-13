@@ -185,9 +185,9 @@
 
 
   
-    <article id="Kettle-Kettle Synchronize after merge" class="article article-type-Kettle" itemscope itemprop="blogPost">
+    <article id="Kettle-Kettle Data Sync" class="article article-type-Kettle" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2021/04/27/Kettle%20Synchronize%20after%20merge/" class="article-date">
+    <a href="/2021/04/27/Kettle%20Data%20Sync/" class="article-date">
   <time datetime="2021-04-27T02:03:38.000Z" itemprop="datePublished">2021-04-27</time>
 </a>
     
@@ -203,7 +203,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2021/04/27/Kettle%20Synchronize%20after%20merge/">Kettle 数据同步(Kettle Synchronize after merge)</a>
+      <a class="article-title" href="/2021/04/27/Kettle%20Data%20Sync/">Kettle 数据同步(Kettle Synchronize after merge)</a>
     </h1>
   
 
@@ -243,7 +243,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/04/27/Kettle%20Synchronize%20after%20merge/" data-id="cknzgvyqy0000xse59w3y8bjp" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/04/27/Kettle%20Data%20Sync/" data-id="ckom75mdz0004q8e51elq7jm9" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Kettle/" rel="tag">Kettle</a></li></ul>
@@ -292,6 +292,54 @@
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kettle/" rel="tag">kettle</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="Java-Java8 Stream Page Iterator" class="article article-type-Java" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/04/19/Java8%20Stream%20Page%20Iterator/" class="article-date">
+  <time datetime="2021-04-19T08:06:38.000Z" itemprop="datePublished">2021-04-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java/">Java</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/04/19/Java8%20Stream%20Page%20Iterator/">Java List 分页 遍历</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id=""><a href="#" class="headerlink" title=""></a></h3><h3 id="前言：-有这样一个需求，一次性查询出所有数据，然后分页遍历数据"><a href="#前言：-有这样一个需求，一次性查询出所有数据，然后分页遍历数据" class="headerlink" title="前言： 有这样一个需求，一次性查询出所有数据，然后分页遍历数据"></a>前言： 有这样一个需求，一次性查询出所有数据，然后分页遍历数据</h3><ol>
+<li><p>java stream skip，  limit </p>
+<h4 id="通过skip跳过数据，limit限制访问的数据，外层套一个页码循环，实现分页遍历List"><a href="#通过skip跳过数据，limit限制访问的数据，外层套一个页码循环，实现分页遍历List" class="headerlink" title="通过skip跳过数据，limit限制访问的数据，外层套一个页码循环，实现分页遍历List"></a>通过skip跳过数据，limit限制访问的数据，外层套一个页码循环，实现分页遍历List</h4></li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StreamExample</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">		<span class="comment">/**</span></span><br><span class="line"><span class="comment">     * List分页遍历</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">page</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        List&lt;Integer&gt; is = Arrays.asList(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>, <span class="number">11</span>, <span class="number">12</span>);</span><br><span class="line">        <span class="comment">// 每页的数据</span></span><br><span class="line">        <span class="keyword">int</span> size = <span class="number">5</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> page = <span class="number">0</span>; page &lt; (is.size() - <span class="number">1</span>) / size + <span class="number">1</span>; page++) &#123;</span><br><span class="line">            is.stream().skip(page * size).limit(size).forEach(System.out::println);</span><br><span class="line">            System.out.println();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/04/19/Java8%20Stream%20Page%20Iterator/" data-id="ckom75mdp0000q8e5al0f9cxn" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/" rel="tag">Java</a></li></ul>
 
     </footer>
   </div>
@@ -455,9 +503,9 @@
 
 
   
-    <article id="helloworld-Kettyle" class="article article-type-helloworld" itemscope itemprop="blogPost">
+    <article id="helloworld-Kettle" class="article article-type-helloworld" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2021/04/01/Kettyle/" class="article-date">
+    <a href="/2021/04/01/Kettle/" class="article-date">
   <time datetime="2021-04-01T09:03:38.000Z" itemprop="datePublished">2021-04-01</time>
 </a>
     
@@ -473,7 +521,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2021/04/01/Kettyle/">HelloWorld Hexo</a>
+      <a class="article-title" href="/2021/04/01/Kettle/">HelloWorld Hexo</a>
     </h1>
   
 
@@ -487,7 +535,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/04/01/Kettyle/" data-id="ckns820jb000470e5gt89bfwl" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/04/01/Kettle/" data-id="ckom75mdu0001q8e5eero0xck" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li></ul>
@@ -509,7 +557,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kettle/">Kettle</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/hexo/">hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/kettle/">kettle</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/ureport2/">ureport2</a></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kettle/">Kettle</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/hexo/">hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/kettle/">kettle</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/ureport2/">ureport2</a></li></ul>
     </div>
   </div>
 
@@ -519,7 +567,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kettle/" rel="tag">Kettle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NodeJs/" rel="tag">NodeJs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kettle/" rel="tag">kettle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ureport2/" rel="tag">ureport2</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kettle/" rel="tag">Kettle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NodeJs/" rel="tag">NodeJs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kettle/" rel="tag">kettle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ureport2/" rel="tag">ureport2</a></li></ul>
     </div>
   </div>
 
@@ -529,7 +577,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/Kettle/" style="font-size: 20px;">Kettle</a> <a href="/tags/NodeJs/" style="font-size: 10px;">NodeJs</a> <a href="/tags/kettle/" style="font-size: 10px;">kettle</a> <a href="/tags/ureport2/" style="font-size: 20px;">ureport2</a>
+      <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/Kettle/" style="font-size: 20px;">Kettle</a> <a href="/tags/NodeJs/" style="font-size: 10px;">NodeJs</a> <a href="/tags/kettle/" style="font-size: 10px;">kettle</a> <a href="/tags/ureport2/" style="font-size: 20px;">ureport2</a>
     </div>
   </div>
 
@@ -559,7 +607,7 @@
           </li>
         
           <li>
-            <a href="/2021/04/27/Kettle%20Synchronize%20after%20merge/">Kettle 数据同步(Kettle Synchronize after merge)</a>
+            <a href="/2021/04/27/Kettle%20Data%20Sync/">Kettle 数据同步(Kettle Synchronize after merge)</a>
           </li>
         
           <li>
@@ -567,7 +615,7 @@
           </li>
         
           <li>
-            <a href="/2021/04/16/UReport2%20Note1/">UReport2 自定义存储器无效</a>
+            <a href="/2021/04/19/Java8%20Stream%20Page%20Iterator/">Java List 分页 遍历</a>
           </li>
         
       </ul>
