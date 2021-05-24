@@ -66,6 +66,123 @@
       <div class="outer">
         <section id="main">
   
+    <article id="Spring-SpringBoot Profile" class="article article-type-Spring" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/05/17/SpringBoot%20Profile/" class="article-date">
+  <time datetime="2021-05-17T04:45:38.000Z" itemprop="datePublished">2021-05-17</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Spring/">Spring</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/05/17/SpringBoot%20Profile/">Spring 静态属性加载配置</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="前言：-Spring采用静态类作为配置，但是属性需要从配置文件加载"><a href="#前言：-Spring采用静态类作为配置，但是属性需要从配置文件加载" class="headerlink" title="前言： Spring采用静态类作为配置，但是属性需要从配置文件加载"></a>前言： Spring采用静态类作为配置，但是属性需要从配置文件加载</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Config</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> String ip;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>启动报错</p>
+<p> Autowired annotation is not supported on static fields: public static</p>
+<p>解决： 新增set方法，在set方法进行 @Value注入</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Config</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> String ip;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value(&quot;$&#123;config.ip&#125;&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setIp</span><span class="params">(String ip)</span> </span>&#123;</span><br><span class="line">        Config.ip = ip;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/05/17/SpringBoot%20Profile/" data-id="ckory311k00034oe5fiki79ty" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Spring/" rel="tag">Spring</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="SpringBoot-Spring Config Static Properties" class="article article-type-SpringBoot" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/05/17/Spring%20Config%20Static%20Properties/" class="article-date">
+  <time datetime="2021-05-17T01:45:38.000Z" itemprop="datePublished">2021-05-17</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/SpringBoot/">SpringBoot</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/05/17/Spring%20Config%20Static%20Properties/">SpringBoot 多环境 配置文件 profile</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="前言：-SpringBoot-工程一般都会有多份配置文件，例如-default，dev，test，prod-等等，需要快速切换配置文件"><a href="#前言：-SpringBoot-工程一般都会有多份配置文件，例如-default，dev，test，prod-等等，需要快速切换配置文件" class="headerlink" title="前言： SpringBoot  工程一般都会有多份配置文件，例如 default，dev，test，prod 等等，需要快速切换配置文件"></a>前言： SpringBoot  工程一般都会有多份配置文件，例如 default，dev，test，prod 等等，需要快速切换配置文件</h3><ol>
+<li><p>多文件，文件格式 application-{profile}.properties 或  application-{profile}.yml</p>
+<ol>
+<li>新建配置dev，prod即可</li>
+<li>application-dev.properties / application-dev.yml</li>
+<li>application-prod.properties / application-prod.yml</li>
+</ol>
+</li>
+<li><p>多文档，yml通过 “—“ 进行文档分割</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">server:</span><br><span class="line">  port: 80</span><br><span class="line">spring:</span><br><span class="line">  profiles:</span><br><span class="line">    active: dev</span><br><span class="line">---</span><br><span class="line">spring:</span><br><span class="line">  profiles: default</span><br><span class="line">server:</span><br><span class="line">  port: 80    </span><br><span class="line">---</span><br><span class="line">spring:</span><br><span class="line">  profiles: dev</span><br><span class="line">server:</span><br><span class="line">  port: 8080</span><br><span class="line">---</span><br><span class="line">spring:</span><br><span class="line">  profiles: prod</span><br><span class="line">server:</span><br><span class="line">  port: 8085</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+<li><p>使用指定配置</p>
+<ol>
+<li><p>配置文件配置</p>
+<p>在配置文件中使用配置项指定使用环境，不建议，因为需要修改配置文件，不利于生产环境切换。</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">profiles:</span></span><br><span class="line">    <span class="attr">active:</span> <span class="string">dev</span></span><br></pre></td></tr></table></figure>
+
+<p>或</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">spring.profiles.active</span>=<span class="string">dev</span></span><br></pre></td></tr></table></figure></li>
+<li><p>java命令行启动配置，启动的时候指定。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">   java -jar java.jar --spring.profiles.active=dev</span><br><span class="line">   或</span><br><span class="line">java -jar java.jar -Dspring.profiles.active=dev</span><br><span class="line">   </span><br></pre></td></tr></table></figure></li>
+<li><p>Configuration配置，Idea启动配置环境，配置虚拟机用的不多，不建议使用。</p>
+</li>
+</ol>
+</li>
+</ol>
+<p><img src="%5Cimg%5Cimage-20210517095730767.png" alt="image-20210517095730767"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/05/17/Spring%20Config%20Static%20Properties/" data-id="ckos3x00o0003o8e5gcej6xsr" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SpringBoot/" rel="tag">SpringBoot</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="Java-Java8 Stream Page Iterator" class="article article-type-Java" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2021/05/13/Java8%20Stream%20Page%20Iterator/" class="article-date">
@@ -503,51 +620,12 @@
 
 
   
-    <article id="helloworld-Kettle" class="article article-type-helloworld" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/04/01/Kettle/" class="article-date">
-  <time datetime="2021-04-01T09:03:38.000Z" itemprop="datePublished">2021-04-01</time>
-</a>
+
+
+  <nav id="page-nav">
     
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/hexo/">hexo</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/04/01/Kettle/">HelloWorld Hexo</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Empty</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2021/04/01/Kettle/" data-id="ckom75mdu0001q8e5eero0xck" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">下一页 &amp;raquo;</a>
+  </nav>
 
 </section>
         
@@ -557,7 +635,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kettle/">Kettle</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/hexo/">hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/kettle/">kettle</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/ureport2/">ureport2</a></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kettle/">Kettle</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/SpringBoot/">SpringBoot</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/hexo/">hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/kettle/">kettle</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/ureport2/">ureport2</a></li></ul>
     </div>
   </div>
 
@@ -567,7 +645,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kettle/" rel="tag">Kettle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NodeJs/" rel="tag">NodeJs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kettle/" rel="tag">kettle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ureport2/" rel="tag">ureport2</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kettle/" rel="tag">Kettle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NodeJs/" rel="tag">NodeJs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/" rel="tag">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringBoot/" rel="tag">SpringBoot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kettle/" rel="tag">kettle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ureport2/" rel="tag">ureport2</a></li></ul>
     </div>
   </div>
 
@@ -577,7 +655,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/Kettle/" style="font-size: 20px;">Kettle</a> <a href="/tags/NodeJs/" style="font-size: 10px;">NodeJs</a> <a href="/tags/kettle/" style="font-size: 10px;">kettle</a> <a href="/tags/ureport2/" style="font-size: 20px;">ureport2</a>
+      <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/Kettle/" style="font-size: 20px;">Kettle</a> <a href="/tags/NodeJs/" style="font-size: 10px;">NodeJs</a> <a href="/tags/Spring/" style="font-size: 10px;">Spring</a> <a href="/tags/SpringBoot/" style="font-size: 10px;">SpringBoot</a> <a href="/tags/kettle/" style="font-size: 10px;">kettle</a> <a href="/tags/ureport2/" style="font-size: 20px;">ureport2</a>
     </div>
   </div>
 
@@ -599,6 +677,14 @@
       <ul>
         
           <li>
+            <a href="/2021/05/17/SpringBoot%20Profile/">Spring 静态属性加载配置</a>
+          </li>
+        
+          <li>
+            <a href="/2021/05/17/Spring%20Config%20Static%20Properties/">SpringBoot 多环境 配置文件 profile</a>
+          </li>
+        
+          <li>
             <a href="/2021/05/13/Java8%20Stream%20Page%20Iterator/">Java List 分页 遍历</a>
           </li>
         
@@ -608,14 +694,6 @@
         
           <li>
             <a href="/2021/04/27/Kettle%20InputUpdate/">Kettle 插入/更新(Kettle Insert/Update)</a>
-          </li>
-        
-          <li>
-            <a href="/2021/04/27/Kettle%20Data%20Sync/">Kettle 数据同步(Kettle Synchronize after merge)</a>
-          </li>
-        
-          <li>
-            <a href="/2021/04/19/HelloWorld%20Hexo/">HelloWorld Kettle</a>
           </li>
         
       </ul>
