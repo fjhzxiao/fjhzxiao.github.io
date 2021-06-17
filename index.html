@@ -66,10 +66,10 @@
       <div class="outer">
         <section id="main">
   
-    <article id="Docker-Vue Nginx 服务器刷新404" class="article article-type-Docker" itemscope itemprop="blogPost">
+    <article id="Docker Nginx-Docker Nginx" class="article article-type-Docker Nginx" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2021/06/09/Vue%20Nginx%20%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%88%B7%E6%96%B0404/" class="article-date">
-  <time datetime="2021-06-09T08:06:38.000Z" itemprop="datePublished">2021-06-09</time>
+    <a href="/2021/06/11/Docker%20Nginx/" class="article-date">
+  <time datetime="2021-06-11T08:06:38.000Z" itemprop="datePublished">2021-06-11</time>
 </a>
     
   <div class="article-category">
@@ -84,7 +84,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2021/06/09/Vue%20Nginx%20%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%88%B7%E6%96%B0404/">Docker 离线安装</a>
+      <a class="article-title" href="/2021/06/11/Docker%20Nginx/">Docker Nginx</a>
     </h1>
   
 
@@ -92,13 +92,25 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="前言："><a href="#前言：" class="headerlink" title="前言："></a>前言：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">今天vue项目build后，放到nginx的html目录下，浏览器刷新404</span><br></pre></td></tr></table></figure>
+        <h3 id="前言：-Nginx-使用docker快速部署"><a href="#前言：-Nginx-使用docker快速部署" class="headerlink" title="前言： Nginx 使用docker快速部署"></a>前言： Nginx 使用docker快速部署</h3><h3 id="docker安装请参考"><a href="#docker安装请参考" class="headerlink" title="docker安装请参考"></a>docker安装请参考</h3><p>前端打包成镜像，或者可以将html目录挂载出来</p>
+<p>Dockerfile </p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> nginx</span><br><span class="line"><span class="keyword">VOLUME</span><span class="bash"> /tmp</span></span><br><span class="line"><span class="keyword">ENV</span> LANG en_US.UTF-<span class="number">8</span></span><br><span class="line"><span class="keyword">ADD</span><span class="bash"> ./dist/ /usr/share/nginx/html/</span></span><br><span class="line"><span class="keyword">EXPOSE</span> <span class="number">80</span></span><br><span class="line"><span class="keyword">EXPOSE</span> <span class="number">443</span></span><br></pre></td></tr></table></figure>
 
-<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># nginx转发路由添加 try_files $uri $uri&#x2F; &#x2F;index.html;</span><br><span class="line"></span><br><span class="line">location &#x2F; &#123;</span><br><span class="line">        root &#x2F;usr&#x2F;share&#x2F;nginx&#x2F;html;</span><br><span class="line">        try_files $uri $uri&#x2F; &#x2F;index.html;</span><br><span class="line">        index index.html;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>打包前端镜像</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> frontend_dir</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> docker build .</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> docker tag IMAGE_ID IMAGE_NAME:VERSION</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Nginx启动"><a href="#Nginx启动" class="headerlink" title="Nginx启动"></a>Nginx启动</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 8088:80 IMAGE_NAME:VERSION</span><br></pre></td></tr></table></figure>
+
+<h3 id="Nginx-Docker-compose启动"><a href="#Nginx-Docker-compose启动" class="headerlink" title="Nginx Docker-compose启动"></a>Nginx Docker-compose启动</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">docker-compose.yaml</span></span><br><span class="line"><span class="attr">version:</span> <span class="number">3</span></span><br><span class="line"><span class="attr">services:</span> </span><br><span class="line">  <span class="attr">nginx:</span></span><br><span class="line">    <span class="attr">images:</span> <span class="string">nginx</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="number">8088</span><span class="string">:80</span></span><br><span class="line">      <span class="bullet">-</span> <span class="number">443</span><span class="string">:443</span></span><br><span class="line">    <span class="attr">volumnes:</span></span><br><span class="line"><span class="comment">#      - /home/project/html/:/usr/share/nginx/html/</span></span><br><span class="line"><span class="comment">#      - /home/project/nginx/nginx.conf:/etc/nginx/nginx.conf</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">/home/project/nginx/conf.d:/etc/nginx/conf.d</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="创建前端的基于Nginx的镜像，nginx转发配置"><a href="#创建前端的基于Nginx的镜像，nginx转发配置" class="headerlink" title="创建前端的基于Nginx的镜像，nginx转发配置"></a>创建前端的基于Nginx的镜像，nginx转发配置</h3><p>defulat.conf</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen       80;</span><br><span class="line">    server_name  localhost;</span><br><span class="line"></span><br><span class="line">    #charset koi8-r;</span><br><span class="line">    #access_log  &#x2F;var&#x2F;log&#x2F;nginx&#x2F;host.access.log  main;</span><br><span class="line"></span><br><span class="line">    location &#x2F; &#123;</span><br><span class="line">        root &#x2F;usr&#x2F;share&#x2F;nginx&#x2F;html;</span><br><span class="line">        index index.html;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    # 后台地址转发，backend为后台地址</span><br><span class="line">    location &#x2F;api&#x2F; &#123;</span><br><span class="line">        proxy_pass        http:&#x2F;&#x2F;backend&#x2F;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    error_page   500 502 503 504  &#x2F;50x.html;</span><br><span class="line">    location &#x3D; &#x2F;50x.html &#123;</span><br><span class="line">        root   &#x2F;usr&#x2F;share&#x2F;nginx&#x2F;html;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://hzxiao.top/2021/06/09/Vue%20Nginx%20%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%88%B7%E6%96%B0404/" data-id="ckppbo2i90005x8e54rvq35q1" class="article-share-link">Share</a>
+      <a data-url="http://hzxiao.top/2021/06/11/Docker%20Nginx/" data-id="ckprq1uc4000qake51ujv9s3j" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li></ul>
@@ -110,9 +122,189 @@
 
 
   
-    <article id="Docker-Docker 离线安装" class="article article-type-Docker" itemscope itemprop="blogPost">
+    <article id="Docker-Docker Jenkins Install" class="article article-type-Docker" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2021/06/09/Docker%20%E7%A6%BB%E7%BA%BF%E5%AE%89%E8%A3%85/" class="article-date">
+    <a href="/2021/06/10/Docker%20Jenkins%20Install/" class="article-date">
+  <time datetime="2021-06-10T01:32:38.000Z" itemprop="datePublished">2021-06-10</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Docker/">Docker</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/06/10/Docker%20Jenkins%20Install/">Docker Jenkins 部署</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="前言："><a href="#前言：" class="headerlink" title="前言："></a>前言：</h3><p>Docker 是一个开源的应用容器引擎，让开发者可以打包他们的应用以及依赖包到一个可移植的镜像中，然后发布到任何流行的 Linux或Windows 机器上，也可以实现虚拟化。容器是完全使用沙箱机制，相互之间不会有任何接口。</p>
+<p>Jenkins是一个开源的、提供友好操作界面的持续集成(CI)工具，起源于Hudson（Hudson是商用的），主要用于持续、自动的构建/测试软件项目、监控外部任务的运行。Jenkins用Java语言编写，可在Tomcat等流行的servlet容器中运行，也可独立运行。通常与版本管理工具(SCM)、构建工具结合使用。常用的版本控制工具有SVN、Git，构建工具有Maven、Ant、Gradle等。</p>
+<p>Docker Jenkins的安装，镜像选择，jenkins和jenkins\jenkins都是官方的镜像，前者已经不维护了，推荐使用后者。</p>
+<p>PS: 如果不能联网，从能联网的主机拉取镜像，然后保存，导入</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> docker pull jenkins/jenkins</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> docker save jenkins/jenkins &gt; jenkins.tar</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 上传到服务器</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> docker load &lt; jenkins.tar</span></span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 搜索jenkins镜像</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> docker search jenkins</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 拉取镜像</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> docker pull jenkins/jenkins</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看镜像</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> docker images</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 创建本地挂载目录</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> mkdir /data/jenkins_home</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 创建jenkins容器</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> </span></span><br></pre></td></tr></table></figure>
+
+<p><img src="%5Cimg%5Cimage-20210610093418120.png" alt="image-20210610093418120"></p>
+<p>创建jenkins容器</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> docker-compose up -d</span></span><br></pre></td></tr></table></figure>
+
+<p>通过Docker-compose 编排，推荐。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">&#x27;3&#x27;</span> </span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">jenkins:</span> </span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">jenkins</span> </span><br><span class="line">    <span class="attr">image:</span> <span class="string">jenkins/jenkins</span> </span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span> </span><br><span class="line">    <span class="attr">user:</span> <span class="string">root</span></span><br><span class="line">    <span class="attr">ports:</span> </span><br><span class="line">      <span class="bullet">-</span> <span class="number">8888</span><span class="string">:8080</span> </span><br><span class="line">      <span class="bullet">-</span> <span class="number">50000</span><span class="string">:50000</span> </span><br><span class="line">    <span class="attr">volumes:</span> </span><br><span class="line">      <span class="bullet">-</span> <span class="string">/data/jenkins/jenkins_home:/var/jenkins_home</span> </span><br><span class="line">      <span class="bullet">-</span> <span class="string">/etc/localtime:/etc/localtime:ro</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="%5Cimg%5Cimage-20210610095012160.png" alt="image-20210610095012160"></p>
+<p>容器创建并启动成功，留意控制台，拷贝密码登陆的时候需要使用。</p>
+<p>打开浏览器访问</p>
+<p><a target="_blank" rel="noopener" href="http://127.0.0.1:8888/">http://127.0.0.1:8888/</a> 耐心等待~</p>
+<p><img src="%5Cimg%5Cimage-20210610100944217.png" alt="image-20210610100944217"></p>
+<p>输入控制台打印出来的密码</p>
+<p><img src="%5Cimg%5Cimage-20210610101039130.png" alt="image-20210610101039130"></p>
+<p>等待~</p>
+<p><img src="%5Cimg%5Cimage-20210610101139009.png" alt="image-20210610101139009"></p>
+<p>注意选择这个，暂时先不安装推荐插件</p>
+<p><img src="%5Cimg%5Cimage-20210610101215178.png" alt="image-20210610101215178"></p>
+<p>取消所有推荐插件</p>
+<p><img src="%5Cimg%5Cimage-20210610101257754.png" alt="image-20210610101257754"></p>
+<p>创建账号</p>
+<p><img src="%5Cimg%5Cimage-20210610101328613.png" alt="image-20210610101328613"></p>
+<p>默认</p>
+<p><img src="%5Cimg%5Cimage-20210610101400815.png" alt="image-20210610101400815"></p>
+<p>jenkins配置完成</p>
+<p><img src="%5Cimg%5Cimage-20210610101414301.png" alt="image-20210610101414301"></p>
+<p>插件下载</p>
+<p><img src="%5Cimg%5Cimage-20210610101510306.png" alt="image-20210610101510306"></p>
+<p><img src="%5Cimg%5Cimage-20210610101756747.png" alt="image-20210610101756747"></p>
+<p><img src="%5Cimg%5Cimage-20210610101809178.png" alt="image-20210610101809178"></p>
+<p><img src="%5Cimg%5Cimage-20210610101823106.png" alt="image-20210610101823106"></p>
+<p>配置Update Site的url</p>
+<p><a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/jenkins/updates/update-center.json">https://mirrors.tuna.tsinghua.edu.cn/jenkins/updates/update-center.json</a></p>
+<p><img src="%5Cimg%5Cimage-20210610101950966.png" alt="image-20210610101950966"></p>
+<p>然后到jenkins挂载目录下</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 具体目录根据自己挂载的情况</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> /data/jenkins/jenkins_home/updates</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 备份配置</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> cp default.json default.json.bak</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 替换url</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> sudo sed -i <span class="string">&#x27;s/http:\/\/updates.jenkins-ci.org\/download/https:\/\/mirrors.tuna.tsinghua.edu.cn\/jenkins/g&#x27;</span> default.json &amp;&amp; sudo sed -i <span class="string">&#x27;s/http:\/\/www.google.com/https:\/\/www.baidu.com/g&#x27;</span> default.json</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 重新启动容器</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> docker restart jenkins</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>重新登陆jenkins，感受光速下载吧~</p>
+<p>选择插件</p>
+<p><img src="%5Cimg%5Cimage-20210610102455639.png" alt="image-20210610102455639"></p>
+<p>等待插件下载完成</p>
+<p><img src="%5Cimg%5Cimage-20210610102545275.png" alt="image-20210610102545275"></p>
+<p>勾选插件下载完成自动重启</p>
+<p><img src="%5Cimg%5Cimage-20210610102605215.png" alt="image-20210610102605215"></p>
+<p>部署完成~</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://hzxiao.top/2021/06/10/Docker%20Jenkins%20Install/" data-id="ckpro56d10009ake52b02evqw" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="Docker-Docker Jenkins Start Error " class="article article-type-Docker" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/06/10/Docker%20Jenkins%20Start%20Error%20/" class="article-date">
+  <time datetime="2021-06-10T01:32:38.000Z" itemprop="datePublished">2021-06-10</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Docker/">Docker</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/06/10/Docker%20Jenkins%20Start%20Error%20/">Docker Jenkins 部署</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="前言："><a href="#前言：" class="headerlink" title="前言："></a>前言：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Docker 是一个开源的应用容器引擎，让开发者可以打包他们的应用以及依赖包到一个可移植的镜像中，然后发布到任何流行的 Linux或Windows 机器上，也可以实现虚拟化。容器是完全使用沙箱机制，相互之间不会有任何接口。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>Docker启动jenkins 后报错</p>
+<p><img src="%5Cimg%5Cimage-20210610094554094.png" alt="image-20210610094554094"></p>
+<p>原因：</p>
+<p>volume对应的持久化文件夹所有者不是jenkins。</p>
+<p>解决方案：</p>
+<p>修改权限</p>
+<p>1、docker-compose.yaml 添加  user</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">&#x27;3&#x27;</span> </span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">jenkins:</span> </span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">jenkins</span> </span><br><span class="line">    <span class="attr">image:</span> <span class="string">jenkins/jenkins</span> </span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span> </span><br><span class="line">    <span class="attr">ports:</span> </span><br><span class="line">      <span class="bullet">-</span> <span class="number">8888</span><span class="string">:8080</span> </span><br><span class="line">      <span class="bullet">-</span> <span class="number">50000</span><span class="string">:50000</span> </span><br><span class="line">    <span class="attr">volumes:</span> </span><br><span class="line">      <span class="bullet">-</span> <span class="string">/data/jenkins/jenkins_home:/var/jenkins_home</span> </span><br><span class="line">      <span class="bullet">-</span> <span class="string">/etc/localtime:/etc/localtime:ro</span></span><br></pre></td></tr></table></figure>
+
+<p>3、docker</p>
+<p>启动添加  -u root</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> jenkins docker run -d \</span></span><br><span class="line"><span class="bash">-u root \</span></span><br><span class="line"><span class="bash">-p 8888:8080 \</span></span><br><span class="line"><span class="bash">-p 50001:50000 \</span></span><br><span class="line"><span class="bash">-v /home/jenkins_home2:/var/jenkins_home</span> </span><br><span class="line">--name jenkins jenkins/jenkins </span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://hzxiao.top/2021/06/10/Docker%20Jenkins%20Start%20Error%20/" data-id="ckpro50wf0006ake5glineoxn" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Untitled" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/06/10/Untitled/" class="article-date">
+  <time datetime="2021-06-10T01:12:59.365Z" itemprop="datePublished">2021-06-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://hzxiao.top/2021/06/10/Untitled/" data-id="ckpq7igpj00008ge5gj6o01i6" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="Docker-Docker Offline Install" class="article article-type-Docker" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/06/09/Docker%20Offline%20Install/" class="article-date">
   <time datetime="2021-06-09T08:06:38.000Z" itemprop="datePublished">2021-06-09</time>
 </a>
     
@@ -128,7 +320,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2021/06/09/Docker%20%E7%A6%BB%E7%BA%BF%E5%AE%89%E8%A3%85/">Docker 离线安装</a>
+      <a class="article-title" href="/2021/06/09/Docker%20Offline%20Install/">Docker 离线安装</a>
     </h1>
   
 
@@ -146,7 +338,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://hzxiao.top/2021/06/09/Docker%20%E7%A6%BB%E7%BA%BF%E5%AE%89%E8%A3%85/" data-id="ckppbo2i70004x8e53ezg8qwv" class="article-share-link">Share</a>
+      <a data-url="http://hzxiao.top/2021/06/09/Docker%20Offline%20Install/" data-id="ckpro4u010003ake5fr4m19mg" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li></ul>
@@ -158,9 +350,9 @@
 
 
   
-    <article id="Docker-Docker 快速入门" class="article article-type-Docker" itemscope itemprop="blogPost">
+    <article id="Docker-Docker HelloWorld" class="article article-type-Docker" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2021/06/09/Docker%20%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/" class="article-date">
+    <a href="/2021/06/09/Docker%20HelloWorld/" class="article-date">
   <time datetime="2021-06-09T08:06:38.000Z" itemprop="datePublished">2021-06-09</time>
 </a>
     
@@ -176,7 +368,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2021/06/09/Docker%20%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/">Docker 快速使用</a>
+      <a class="article-title" href="/2021/06/09/Docker%20HelloWorld/">Docker 快速入门 使用</a>
     </h1>
   
 
@@ -225,7 +417,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://hzxiao.top/2021/06/09/Docker%20%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/" data-id="ckppbo2i10001x8e56n546rur" class="article-share-link">Share</a>
+      <a data-url="http://hzxiao.top/2021/06/09/Docker%20HelloWorld/" data-id="ckpro4lfs0000ake563oz7zw4" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li></ul>
@@ -237,9 +429,53 @@
 
 
   
-    <article id="Docker-Docker 常用容器" class="article article-type-Docker" itemscope itemprop="blogPost">
+    <article id="Nginx Vue-Vue Nginx Refresh 404" class="article article-type-Nginx Vue" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2021/06/09/Docker%20%E5%B8%B8%E7%94%A8%E5%AE%B9%E5%99%A8/" class="article-date">
+    <a href="/2021/06/09/Vue%20Nginx%20Refresh%20404/" class="article-date">
+  <time datetime="2021-06-09T08:06:38.000Z" itemprop="datePublished">2021-06-09</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Nginx-Vue/">Nginx Vue</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/06/09/Vue%20Nginx%20Refresh%20404/">Vue Nginx 服务器 地址刷新 404</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="前言："><a href="#前言：" class="headerlink" title="前言："></a>前言：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">今天vue项目build后，放到nginx的html目录下，浏览器刷新404</span><br></pre></td></tr></table></figure>
+
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># nginx转发路由添加 try_files $uri $uri&#x2F; &#x2F;index.html;</span><br><span class="line"></span><br><span class="line">location &#x2F; &#123;</span><br><span class="line">        root &#x2F;usr&#x2F;share&#x2F;nginx&#x2F;html;</span><br><span class="line">        try_files $uri $uri&#x2F; &#x2F;index.html;</span><br><span class="line">        index index.html;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://hzxiao.top/2021/06/09/Vue%20Nginx%20Refresh%20404/" data-id="ckpro5j8e000fake5gz3w2k7o" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nginx-Vue/" rel="tag">Nginx Vue</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="Docker-Docker Container" class="article article-type-Docker" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/06/09/Docker%20Container/" class="article-date">
   <time datetime="2021-06-09T08:06:38.000Z" itemprop="datePublished">2021-06-09</time>
 </a>
     
@@ -255,7 +491,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2021/06/09/Docker%20%E5%B8%B8%E7%94%A8%E5%AE%B9%E5%99%A8/">Docker 离线安装</a>
+      <a class="article-title" href="/2021/06/09/Docker%20Container/">Docker 常用容器</a>
     </h1>
   
 
@@ -265,13 +501,13 @@
       
         <h3 id="前言："><a href="#前言：" class="headerlink" title="前言："></a>前言：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Docker 是一个开源的应用容器引擎，让开发者可以打包他们的应用以及依赖包到一个可移植的镜像中，然后发布到任何流行的 Linux或Windows 机器上，也可以实现虚拟化。容器是完全使用沙箱机制，相互之间不会有任何接口。</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">1. mysql docker run --name mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 -d mysql:5.7.19 </span><br><span class="line"></span><br><span class="line">2. nacos docker run --env MODE=standalone --name nacos -d -p 8848:8848 nacos/nacos-server </span><br><span class="line"></span><br><span class="line">3. redis </span><br><span class="line">docker run -itd --name redis -p 6379:6379 redis --appendonly yes --requirepass &quot;123456&quot; </span><br><span class="line"></span><br><span class="line">4. sentinel docker run --name sentinel -d -p 8858:8858 -d bladex/sentinel- dashboard </span><br><span class="line"></span><br><span class="line">5. postgresql docker run -d -p 5432:5432 --name postgresql -v pgdata:/home/pgsql/data -e POSTGRES_PASSWORD=123456 postgres </span><br><span class="line"></span><br><span class="line">6. pgadmin4 docker run -d -p 8087:80 --name pgadmin4 -e PGADMIN_DEFAULT_EMAIL=fjhzxiao@163.com -e PGADMIN_DEFAULT_PASSWORD=123456 dpage/pgadmin4 登陆用户名 fjhzxiao@163.com/123456 </span><br><span class="line"></span><br><span class="line">7. geoserver docker run -d -p 8080:8080 -v /home/geoserver/data_dir:/opt/geoserver/data_dir kartoza/geoserver </span><br><span class="line"></span><br><span class="line">8. jenkins docker run -d -p 8888:8080 -p 50001:50000 -v /home/jenkins_home2:/var/jenkins_home --name jenkins2 jenkins/jenkins docker-compose version: &#x27;3&#x27; services:</span><br><span class="line">jenkins: container_name: jenkins image: jenkins/jenkins restart: always ports: - 8888:8080 - 50000:50000 volumes: - /root/jenkins/jenkins_home:/var/jenkins_home - /etc/localtime:/etc/localtime:ro </span><br><span class="line"></span><br><span class="line">9. portainer </span><br><span class="line">docker-compose.yaml</span><br><span class="line">  version: &#x27;3&#x27; </span><br><span class="line">  services: </span><br><span class="line">  portainer: </span><br><span class="line">  image: portainer/portainer </span><br><span class="line">  ports: - &quot;9000:9000&quot; </span><br><span class="line">  volumes: </span><br><span class="line">    - &quot;/home/portainer/data:/data&quot; </span><br><span class="line">    - &quot;/var/run/docker.sock:/var/run/docker.sock&quot; </span><br><span class="line"></span><br><span class="line">10. nexus docker-compose.yaml version: &#x27;3&#x27; services: nexus: image: sonatype/nexus3 ports: - 8081:8081 volumes:</span><br><span class="line">- /root/nexus/nexus-data:/nexus-data</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">1. mysql docker run --name mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 -d mysql:5.7.19 </span><br><span class="line"></span><br><span class="line">2. nacos docker run --env MODE=standalone --name nacos -d -p 8848:8848 nacos/nacos-server </span><br><span class="line"></span><br><span class="line">3. redis </span><br><span class="line">docker run -itd --name redis -p 6379:6379 redis --appendonly yes --requirepass &quot;123456&quot; </span><br><span class="line"></span><br><span class="line">4. sentinel docker run --name sentinel -d -p 8858:8858 -d bladex/sentinel- dashboard </span><br><span class="line"></span><br><span class="line">5. postgresql docker run -d -p 5432:5432 --name postgresql -v pgdata:/home/pgsql/data -e POSTGRES_PASSWORD=123456 postgres </span><br><span class="line"></span><br><span class="line">6. pgadmin4 docker run -d -p 8087:80 --name pgadmin4 -e PGADMIN_DEFAULT_EMAIL=fjhzxiao@163.com -e PGADMIN_DEFAULT_PASSWORD=123456 dpage/pgadmin4 登陆用户名 fjhzxiao@163.com/123456 </span><br><span class="line"></span><br><span class="line">7. geoserver docker run -d -p 8080:8080 -v /home/geoserver/data_dir:/opt/geoserver/data_dir kartoza/geoserver </span><br><span class="line"></span><br><span class="line">8. jenkins docker run -d -p 8888:8080 -p 50001:50000 -v /home/jenkins_home2:/var/jenkins_home --name jenkins2 jenkins/jenkins </span><br><span class="line"></span><br><span class="line">docker-compose </span><br><span class="line">version: &#x27;3&#x27; </span><br><span class="line">services:</span><br><span class="line">jenkins: container_name: jenkins </span><br><span class="line">image: jenkins/jenkins </span><br><span class="line">restart: always </span><br><span class="line">ports: - 8888:8080 - 50000:50000 </span><br><span class="line">volumes: - /root/jenkins/jenkins_home:/var/jenkins_home - /etc/localtime:/etc/localtime:ro </span><br><span class="line"></span><br><span class="line">9. portainer </span><br><span class="line">docker-compose.yaml</span><br><span class="line">  version: &#x27;3&#x27; </span><br><span class="line">  services: </span><br><span class="line">  portainer: </span><br><span class="line">  image: portainer/portainer </span><br><span class="line">  ports: - &quot;9000:9000&quot; </span><br><span class="line">  volumes: </span><br><span class="line">    - &quot;/home/portainer/data:/data&quot; </span><br><span class="line">    - &quot;/var/run/docker.sock:/var/run/docker.sock&quot; </span><br><span class="line"></span><br><span class="line">10. nexus docker-compose.yaml version: &#x27;3&#x27; services: nexus: image: sonatype/nexus3 ports: - 8081:8081 volumes:</span><br><span class="line">- /root/nexus/nexus-data:/nexus-data</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://hzxiao.top/2021/06/09/Docker%20%E5%B8%B8%E7%94%A8%E5%AE%B9%E5%99%A8/" data-id="ckppbo2hw0000x8e56r59foxk" class="article-share-link">Share</a>
+      <a data-url="http://hzxiao.top/2021/06/09/Docker%20Container/" data-id="ckpro5c2o000cake596u068hm" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li></ul>
@@ -399,243 +635,6 @@
 
 
   
-    <article id="Java-Java8 Stream Page Iterator" class="article article-type-Java" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/05/13/Java8%20Stream%20Page%20Iterator/" class="article-date">
-  <time datetime="2021-05-13T08:06:38.000Z" itemprop="datePublished">2021-05-13</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Java/">Java</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/05/13/Java8%20Stream%20Page%20Iterator/">Java List 分页 遍历</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id=""><a href="#" class="headerlink" title=""></a></h3><h3 id="前言：-有这样一个需求，一次性查询出所有数据，然后分页遍历数据"><a href="#前言：-有这样一个需求，一次性查询出所有数据，然后分页遍历数据" class="headerlink" title="前言： 有这样一个需求，一次性查询出所有数据，然后分页遍历数据"></a>前言： 有这样一个需求，一次性查询出所有数据，然后分页遍历数据</h3><ol>
-<li><p>java stream skip，  limit </p>
-<h4 id="通过skip跳过数据，limit限制访问的数据，外层套一个页码循环，实现分页遍历List"><a href="#通过skip跳过数据，limit限制访问的数据，外层套一个页码循环，实现分页遍历List" class="headerlink" title="通过skip跳过数据，limit限制访问的数据，外层套一个页码循环，实现分页遍历List"></a>通过skip跳过数据，limit限制访问的数据，外层套一个页码循环，实现分页遍历List</h4></li>
-</ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StreamExample</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">		<span class="comment">/**</span></span><br><span class="line"><span class="comment">     * List分页遍历</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">page</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        List&lt;Integer&gt; is = Arrays.asList(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>, <span class="number">11</span>, <span class="number">12</span>);</span><br><span class="line">        <span class="comment">// 每页的数据</span></span><br><span class="line">        <span class="keyword">int</span> size = <span class="number">5</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> page = <span class="number">0</span>; page &lt; (is.size() - <span class="number">1</span>) / size + <span class="number">1</span>; page++) &#123;</span><br><span class="line">            is.stream().skip(page * size).limit(size).forEach(System.out::println);</span><br><span class="line">            System.out.println();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://hzxiao.top/2021/05/13/Java8%20Stream%20Page%20Iterator/" data-id="ckom75mdp0000q8e5al0f9cxn" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/" rel="tag">Java</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="JavaScript-JavaScript iterable" class="article article-type-JavaScript" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/04/29/JavaScript%20iterable/" class="article-date">
-  <time datetime="2021-04-29T01:39:38.000Z" itemprop="datePublished">2021-04-29</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/JavaScript/">JavaScript</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/04/29/JavaScript%20iterable/">JavaScript 循环 iterable</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="聊聊js中的循环，数组遍历"><a href="#聊聊js中的循环，数组遍历" class="headerlink" title="聊聊js中的循环，数组遍历"></a>聊聊js中的循环，数组遍历</h2><p>代码的组成无非就是，顺序，选择，循环。其中最重要的就是循环语句。</p>
-<p>在js中，循环主要有，for, while。在es6里有一些新的方式。</p>
-<h3 id="1、传统循环-for"><a href="#1、传统循环-for" class="headerlink" title="1、传统循环 for"></a>1、传统循环 for</h3><p>优点：方便获取数据下标。</p>
-<p>缺点：容易存在变量污染。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>];</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; arr.length; i++) &#123;</span><br><span class="line">  <span class="built_in">console</span>.info(arr[i]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// logs 1,2,3,4,5</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h3 id="2、while-与for类似，这里不赘述"><a href="#2、while-与for类似，这里不赘述" class="headerlink" title="2、while 与for类似，这里不赘述"></a>2、while 与for类似，这里不赘述</h3><h3 id="3、Arrays对象内置的-forEach，调用方法，针对每一个元素执行。"><a href="#3、Arrays对象内置的-forEach，调用方法，针对每一个元素执行。" class="headerlink" title="3、Arrays对象内置的  forEach，调用方法，针对每一个元素执行。"></a>3、Arrays对象内置的  forEach，调用方法，针对每一个元素执行。</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>];  </span><br><span class="line">arr.forEach(<span class="function">(<span class="params">value, index, array</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// value 当前遍历值</span></span><br><span class="line">  <span class="comment">// index 下标</span></span><br><span class="line">  <span class="comment">// array 数组对象</span></span><br><span class="line">  <span class="built_in">console</span>.info(value);</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// logs 1,2,3,4,5</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="4、some-every"><a href="#4、some-every" class="headerlink" title="4、some, every"></a>4、some, every</h3><p>在 for 循环中可以通过break进行提前结束循环。continue结束当前循环。</p>
-<p>在es6中， some，every 本质是判断所有元素是否符合条件， some 只要有一个返回true 就结束循环。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// some，在满足条件后就会结束循环，every则相反，有一个不满足则结束</span></span><br><span class="line"><span class="keyword">let</span> arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>];</span><br><span class="line">arr.some(<span class="function"><span class="params">v</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.info(v);</span><br><span class="line">  <span class="keyword">return</span> v &gt; <span class="number">2</span>;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// logs 1,2,3</span></span><br></pre></td></tr></table></figure>
-
-<p>every 只要有一个返回 false就结束循环。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>];</span><br><span class="line">arr.every(<span class="function"><span class="params">v</span> =&gt;</span> &#123; </span><br><span class="line">  <span class="built_in">console</span>.info(v);</span><br><span class="line">  <span class="keyword">return</span> v &lt; <span class="number">3</span>;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// logs 1,2,3</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h3 id="5、map-转换，遍历每一个元素，做对应的转换，返回结果"><a href="#5、map-转换，遍历每一个元素，做对应的转换，返回结果" class="headerlink" title="5、map 转换，遍历每一个元素，做对应的转换，返回结果"></a>5、map 转换，遍历每一个元素，做对应的转换，返回结果</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>];</span><br><span class="line">arr.map(<span class="function"><span class="params">v</span> =&gt;</span> v + <span class="number">1</span>).forEach(<span class="function"><span class="params">v</span> =&gt;</span> <span class="built_in">console</span>.info(v));</span><br><span class="line"><span class="comment">// logs 2,3,4,5,6,7</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="6、filter-过滤，过滤出符合条件的项"><a href="#6、filter-过滤，过滤出符合条件的项" class="headerlink" title="6、filter 过滤，过滤出符合条件的项"></a>6、filter 过滤，过滤出符合条件的项</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>];</span><br><span class="line">arr.filter(<span class="function"><span class="params">v</span> =&gt;</span> v &gt; <span class="number">3</span>).forEach(<span class="function"><span class="params">v</span> =&gt;</span> <span class="built_in">console</span>.info(v));</span><br><span class="line"><span class="comment">// logs 4,5,6</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="7、for-in-、for-of-遍历"><a href="#7、for-in-、for-of-遍历" class="headerlink" title="7、for..in 、for..of  遍历"></a>7、for..in 、for..of  遍历</h3><p> for..in 迭代自身属性，不建议用于遍历数组。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> obj = &#123;</span><br><span class="line">  a: <span class="number">1</span>,</span><br><span class="line">  b: <span class="number">2</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">let</span> k <span class="keyword">in</span> obj) &#123;</span><br><span class="line">  <span class="built_in">console</span>.info(k);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// logs a,b</span></span><br></pre></td></tr></table></figure>
-
-<p> for..of 在可迭代对象（包括 Array，Map，Set，String，TypedArray，arguments 对象等遍历。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> arr = [<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>];</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">let</span> v <span class="keyword">of</span> arr) &#123;</span><br><span class="line">  <span class="built_in">console</span>.info(v);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// logs a,b,c</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> iterable = <span class="string">&quot;abc&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> v <span class="keyword">of</span> iterable) &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(v);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// logs a,b,c</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://hzxiao.top/2021/04/29/JavaScript%20iterable/" data-id="cko2fghyn0003oce543a1ctkn" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="Kettle-Kettle InputUpdate" class="article article-type-Kettle" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/04/27/Kettle%20InputUpdate/" class="article-date">
-  <time datetime="2021-04-27T09:03:38.000Z" itemprop="datePublished">2021-04-27</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Kettle/">Kettle</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/04/27/Kettle%20InputUpdate/">Kettle 插入/更新(Kettle Insert/Update)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Kettle Input/Update</p>
-<p>插入与更新，判断目标数据与原数据一致，强制更新。</p>
-<p>与同步最大的区别是，原数据如果删除，目标数据不会删除。</p>
-<p>1、自行创建 source,target 表</p>
-<p>2、拖入 TableInput 配置数据库连接，SQL</p>
-<p><img src="/img/image-20210427114151451.png" alt="image-20210427114151451"></p>
-<p>3、拖入 Input/Update</p>
-<p><img src="/img/image-20210427114146642.png" alt="image-20210427114146642"></p>
-<p>4、执行 Kettle发现，source，target 保持一致，source删除，target并不会删除</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://hzxiao.top/2021/04/27/Kettle%20InputUpdate/" data-id="cknzhbfn70008xse5dq3rdxpu" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Kettle/" rel="tag">Kettle</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="Kettle-Kettle Data Sync" class="article article-type-Kettle" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/04/27/Kettle%20Data%20Sync/" class="article-date">
-  <time datetime="2021-04-27T02:03:38.000Z" itemprop="datePublished">2021-04-27</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Kettle/">Kettle</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/04/27/Kettle%20Data%20Sync/">Kettle 数据同步(Kettle Synchronize after merge)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Kettle 数据同步</p>
-<p>同步的概念，原数据表（数据变化，新增，修改，删除），目标数据表（数据不变化），经过kettle处理，保持目标数据表与原数据表一致。</p>
-<p>1、新建数据表 user_source, user_target   </p>
-<p>id作为主键，其他字段若干</p>
-<p>2、Kettle 拖入两个 Table Input，修改名称为 Source， Target</p>
-<p><img src="/img/image-20210427111123181.png" alt="image-20210427111123181"></p>
-<p>配置数据库连接地址，编写SQL，分别查询 user_source, user_target   </p>
-<p>3、拖入合并（比较）</p>
-<p>从Joins 拖入 Merge rows（diff）</p>
-<p><img src="/img/image-20210427112308832.png" alt="image-20210427112308832"></p>
-<p>注意： 原始数据，以及对比数据，不能弄错。</p>
-<p>Reference rows origin 需要被同步的表</p>
-<p>Compare rows origin 会变更数据的原始表</p>
-<p>Flag fieldname 系统默认，添加数据差异字段（identical， new，changed， deleted）不要修改</p>
-<p>Keys to match 比较数据是否相同的字段</p>
-<p>Values to compare 需要更新的字段</p>
-<p><img src="/img/image-20210427111732584.png" alt="image-20210427111732584"></p>
-<p>添加日志可以查看合并后的数据</p>
-<p>4、同步数据</p>
-<p>拖入 Synchronize after merge 连接 Merge rows</p>
-<p><img src="/img/image-20210427111903879.png" alt="image-20210427111903879"></p>
-<p>配置同步</p>
-<p>General 基本配置</p>
-<p><img src="/img/image-20210427112107717.png" alt="image-20210427112107717"></p>
-<p>Advanced</p>
-<p><img src="/img/image-20210427111955219.png" alt="image-20210427111955219"></p>
-<p>配置完成，即可执行。</p>
-<p>测试，修改  user_source  里面的任意数据，执行 Kettle 转换，user_target 数据会修改，与 user_source 同步。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://hzxiao.top/2021/04/27/Kettle%20Data%20Sync/" data-id="ckom75mdz0004q8e51elq7jm9" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Kettle/" rel="tag">Kettle</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -651,7 +650,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kettle/">Kettle</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/SpringBoot/">SpringBoot</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/hexo/">hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/kettle/">kettle</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/ureport2/">ureport2</a></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kettle/">Kettle</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Nginx-Vue/">Nginx Vue</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/SpringBoot/">SpringBoot</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/hexo/">hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/ureport2/">ureport2</a></li></ul>
     </div>
   </div>
 
@@ -661,7 +660,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kettle/" rel="tag">Kettle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NodeJs/" rel="tag">NodeJs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/" rel="tag">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringBoot/" rel="tag">SpringBoot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kettle/" rel="tag">kettle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ureport2/" rel="tag">ureport2</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kettle/" rel="tag">Kettle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx-Vue/" rel="tag">Nginx Vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NodeJs/" rel="tag">NodeJs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/" rel="tag">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringBoot/" rel="tag">SpringBoot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ureport2/" rel="tag">ureport2</a></li></ul>
     </div>
   </div>
 
@@ -671,7 +670,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Docker/" style="font-size: 20px;">Docker</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/Kettle/" style="font-size: 15px;">Kettle</a> <a href="/tags/NodeJs/" style="font-size: 10px;">NodeJs</a> <a href="/tags/Spring/" style="font-size: 10px;">Spring</a> <a href="/tags/SpringBoot/" style="font-size: 10px;">SpringBoot</a> <a href="/tags/kettle/" style="font-size: 10px;">kettle</a> <a href="/tags/ureport2/" style="font-size: 15px;">ureport2</a>
+      <a href="/tags/Docker/" style="font-size: 20px;">Docker</a> <a href="/tags/Hexo/" style="font-size: 15px;">Hexo</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/Kettle/" style="font-size: 15px;">Kettle</a> <a href="/tags/Nginx-Vue/" style="font-size: 10px;">Nginx Vue</a> <a href="/tags/NodeJs/" style="font-size: 10px;">NodeJs</a> <a href="/tags/Spring/" style="font-size: 10px;">Spring</a> <a href="/tags/SpringBoot/" style="font-size: 10px;">SpringBoot</a> <a href="/tags/ureport2/" style="font-size: 15px;">ureport2</a>
     </div>
   </div>
 
@@ -693,23 +692,23 @@
       <ul>
         
           <li>
-            <a href="/2021/06/09/Vue%20Nginx%20%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%88%B7%E6%96%B0404/">Docker 离线安装</a>
+            <a href="/2021/06/11/Docker%20Nginx/">Docker Nginx</a>
           </li>
         
           <li>
-            <a href="/2021/06/09/Docker%20%E7%A6%BB%E7%BA%BF%E5%AE%89%E8%A3%85/">Docker 离线安装</a>
+            <a href="/2021/06/10/Docker%20Jenkins%20Install/">Docker Jenkins 部署</a>
           </li>
         
           <li>
-            <a href="/2021/06/09/Docker%20%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/">Docker 快速使用</a>
+            <a href="/2021/06/10/Docker%20Jenkins%20Start%20Error%20/">Docker Jenkins 部署</a>
           </li>
         
           <li>
-            <a href="/2021/06/09/Docker%20%E5%B8%B8%E7%94%A8%E5%AE%B9%E5%99%A8/">Docker 离线安装</a>
+            <a href="/2021/06/10/Untitled/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2021/05/17/SpringBoot%20Profile/">Spring 静态属性加载配置</a>
+            <a href="/2021/06/09/Docker%20Offline%20Install/">Docker 离线安装</a>
           </li>
         
       </ul>
