@@ -158,50 +158,50 @@
 
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 搜索jenkins镜像</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> docker search jenkins</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 拉取镜像</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> docker pull jenkins/jenkins</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看镜像</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> docker images</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 创建本地挂载目录</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> mkdir /data/jenkins_home</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 创建jenkins容器</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> </span></span><br></pre></td></tr></table></figure>
 
-<p><img src="%5Cimg%5Cimage-20210610093418120.png" alt="image-20210610093418120"></p>
+<p><img src="/img/image-20210610093418120.png" alt="image-20210610093418120"></p>
 <p>创建jenkins容器</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> docker-compose up -d</span></span><br></pre></td></tr></table></figure>
 
 <p>通过Docker-compose 编排，推荐。</p>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">&#x27;3&#x27;</span> </span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">jenkins:</span> </span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">jenkins</span> </span><br><span class="line">    <span class="attr">image:</span> <span class="string">jenkins/jenkins</span> </span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span> </span><br><span class="line">    <span class="attr">user:</span> <span class="string">root</span></span><br><span class="line">    <span class="attr">ports:</span> </span><br><span class="line">      <span class="bullet">-</span> <span class="number">8888</span><span class="string">:8080</span> </span><br><span class="line">      <span class="bullet">-</span> <span class="number">50000</span><span class="string">:50000</span> </span><br><span class="line">    <span class="attr">volumes:</span> </span><br><span class="line">      <span class="bullet">-</span> <span class="string">/data/jenkins/jenkins_home:/var/jenkins_home</span> </span><br><span class="line">      <span class="bullet">-</span> <span class="string">/etc/localtime:/etc/localtime:ro</span></span><br></pre></td></tr></table></figure>
 
-<p><img src="%5Cimg%5Cimage-20210610095012160.png" alt="image-20210610095012160"></p>
+<p><img src="/img/image-20210610095012160.png" alt="image-20210610095012160"></p>
 <p>容器创建并启动成功，留意控制台，拷贝密码登陆的时候需要使用。</p>
 <p>打开浏览器访问</p>
 <p><a target="_blank" rel="noopener" href="http://127.0.0.1:8888/">http://127.0.0.1:8888/</a> 耐心等待~</p>
-<p><img src="%5Cimg%5Cimage-20210610100944217.png" alt="image-20210610100944217"></p>
+<p><img src="/img/image-20210610100944217.png" alt="image-20210610100944217"></p>
 <p>输入控制台打印出来的密码</p>
-<p><img src="%5Cimg%5Cimage-20210610101039130.png" alt="image-20210610101039130"></p>
+<p><img src="/img/image-20210610101039130.png" alt="image-20210610101039130"></p>
 <p>等待~</p>
-<p><img src="%5Cimg%5Cimage-20210610101139009.png" alt="image-20210610101139009"></p>
+<p><img src="/img/image-20210610101139009.png" alt="image-20210610101139009"></p>
 <p>注意选择这个，暂时先不安装推荐插件</p>
-<p><img src="%5Cimg%5Cimage-20210610101215178.png" alt="image-20210610101215178"></p>
+<p><img src="/img/image-20210610101215178.png" alt="image-20210610101215178"></p>
 <p>取消所有推荐插件</p>
-<p><img src="%5Cimg%5Cimage-20210610101257754.png" alt="image-20210610101257754"></p>
+<p><img src="/img/image-20210610101257754.png" alt="image-20210610101257754"></p>
 <p>创建账号</p>
-<p><img src="%5Cimg%5Cimage-20210610101328613.png" alt="image-20210610101328613"></p>
+<p><img src="/img/image-20210610101328613.png" alt="image-20210610101328613"></p>
 <p>默认</p>
-<p><img src="%5Cimg%5Cimage-20210610101400815.png" alt="image-20210610101400815"></p>
+<p><img src="/img/image-20210610101400815.png" alt="image-20210610101400815"></p>
 <p>jenkins配置完成</p>
-<p><img src="%5Cimg%5Cimage-20210610101414301.png" alt="image-20210610101414301"></p>
+<p><img src="/img/image-20210610101414301.png" alt="image-20210610101414301"></p>
 <p>插件下载</p>
-<p><img src="%5Cimg%5Cimage-20210610101510306.png" alt="image-20210610101510306"></p>
-<p><img src="%5Cimg%5Cimage-20210610101756747.png" alt="image-20210610101756747"></p>
-<p><img src="%5Cimg%5Cimage-20210610101809178.png" alt="image-20210610101809178"></p>
-<p><img src="%5Cimg%5Cimage-20210610101823106.png" alt="image-20210610101823106"></p>
+<p><img src="/img/image-20210610101510306.png" alt="image-20210610101510306"></p>
+<p><img src="/img/image-20210610101756747.png" alt="image-20210610101756747"></p>
+<p><img src="/img/image-20210610101809178.png" alt="image-20210610101809178"></p>
+<p><img src="/img/image-20210610101823106.png" alt="image-20210610101823106"></p>
 <p>配置Update Site的url</p>
 <p><a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/jenkins/updates/update-center.json">https://mirrors.tuna.tsinghua.edu.cn/jenkins/updates/update-center.json</a></p>
-<p><img src="%5Cimg%5Cimage-20210610101950966.png" alt="image-20210610101950966"></p>
+<p><img src="/img/image-20210610101950966.png" alt="image-20210610101950966"></p>
 <p>然后到jenkins挂载目录下</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 具体目录根据自己挂载的情况</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> /data/jenkins/jenkins_home/updates</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 备份配置</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> cp default.json default.json.bak</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 替换url</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> sudo sed -i <span class="string">&#x27;s/http:\/\/updates.jenkins-ci.org\/download/https:\/\/mirrors.tuna.tsinghua.edu.cn\/jenkins/g&#x27;</span> default.json &amp;&amp; sudo sed -i <span class="string">&#x27;s/http:\/\/www.google.com/https:\/\/www.baidu.com/g&#x27;</span> default.json</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 重新启动容器</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> docker restart jenkins</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <p>重新登陆jenkins，感受光速下载吧~</p>
 <p>选择插件</p>
-<p><img src="%5Cimg%5Cimage-20210610102455639.png" alt="image-20210610102455639"></p>
+<p><img src="/img/image-20210610102455639.png" alt="image-20210610102455639"></p>
 <p>等待插件下载完成</p>
-<p><img src="%5Cimg%5Cimage-20210610102545275.png" alt="image-20210610102545275"></p>
+<p><img src="/img/image-20210610102545275.png" alt="image-20210610102545275"></p>
 <p>勾选插件下载完成自动重启</p>
-<p><img src="%5Cimg%5Cimage-20210610102605215.png" alt="image-20210610102605215"></p>
+<p><img src="/img/image-20210610102605215.png" alt="image-20210610102605215"></p>
 <p>部署完成~</p>
 
       
