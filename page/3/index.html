@@ -66,6 +66,113 @@
       <div class="outer">
         <section id="main">
   
+    <article id="java-UReport2" class="article article-type-java" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/04/14/UReport2/" class="article-date">
+  <time datetime="2021-04-14T09:03:38.000Z" itemprop="datePublished">2021-04-14</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/ureport2/">ureport2</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/04/14/UReport2/">UReport2</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>QuickStart</p>
+<ol>
+<li><p>Springboot快速搭建一个web后台</p>
+</li>
+<li><p>Maven引入包</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.bstek.ureport<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>ureport2-console<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.2.9<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>SpringBoot配置Servlet</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Carrot</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span> 2021/04/15</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Order</span></span><br><span class="line"><span class="meta">@Configuration(proxyBeanMethods = false)</span></span><br><span class="line"><span class="meta">@ImportResource(&quot;classpath:ureport-console-context.xml&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UReport2Configuration</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ServletRegistrationBean&lt;Servlet&gt; <span class="title">registrationBean</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ServletRegistrationBean&lt;&gt;(<span class="keyword">new</span> UReportServlet(), <span class="string">&quot;/ureport/*&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>启动，访问</p>
+<p>浏览器 <a target="_blank" rel="noopener" href="http://127.0.0.1:8080/ureport/designer">http://127.0.0.1:8080/ureport/designer</a> 访问表单设计</p>
+</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://hzxiao.top/2021/04/14/UReport2/" data-id="ckniaifgo0003e0e52k2g4ttn" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ureport2/" rel="tag">ureport2</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="NodeJs-HelloWorld NodeJs" class="article article-type-NodeJs" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/04/14/HelloWorld%20NodeJs/" class="article-date">
+  <time datetime="2021-04-14T02:24:23.000Z" itemprop="datePublished">2021-04-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/04/14/HelloWorld%20NodeJs/">HelloWorld NodeJs</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>NodeJs 入门</p>
+<ol>
+<li><h6 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h6></li>
+<li><p>安装</p>
+</li>
+<li><p>常见问题</p>
+<p>npm install</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">audited 131 packages in 5.605s</span><br><span class="line">found 8 vulnerabilities (4 low, 4 high)</span><br><span class="line">  run &#96;npm audit fix&#96; to fix them, or &#96;npm audit&#96; for details</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>原因：</p>
+<p>解决：</p>
+</li>
+</ol>
+<p>Node包管理工具</p>
+<p>Npm( Node Package Manage )</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://hzxiao.top/2021/04/14/HelloWorld%20NodeJs/" data-id="ckni9kk3m0006yce5cgyh5ewg" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/NodeJs/" rel="tag">NodeJs</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="helloworld-Kettle" class="article article-type-helloworld" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2021/04/01/Kettle/" class="article-date">
@@ -145,7 +252,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Avue/" style="font-size: 10px;">Avue</a> <a href="/tags/Docker/" style="font-size: 20px;">Docker</a> <a href="/tags/Hexo/" style="font-size: 13.33px;">Hexo</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/Kettle/" style="font-size: 16.67px;">Kettle</a> <a href="/tags/Nginx-Vue/" style="font-size: 10px;">Nginx Vue</a> <a href="/tags/NodeJs/" style="font-size: 10px;">NodeJs</a> <a href="/tags/Spring/" style="font-size: 10px;">Spring</a> <a href="/tags/SpringBoot/" style="font-size: 10px;">SpringBoot</a> <a href="/tags/ureport2/" style="font-size: 13.33px;">ureport2</a>
+      <a href="/tags/Avue/" style="font-size: 13.33px;">Avue</a> <a href="/tags/Docker/" style="font-size: 20px;">Docker</a> <a href="/tags/Hexo/" style="font-size: 13.33px;">Hexo</a> <a href="/tags/Java/" style="font-size: 13.33px;">Java</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/Kettle/" style="font-size: 16.67px;">Kettle</a> <a href="/tags/Nginx-Vue/" style="font-size: 10px;">Nginx Vue</a> <a href="/tags/NodeJs/" style="font-size: 10px;">NodeJs</a> <a href="/tags/Spring/" style="font-size: 10px;">Spring</a> <a href="/tags/SpringBoot/" style="font-size: 10px;">SpringBoot</a> <a href="/tags/ureport2/" style="font-size: 13.33px;">ureport2</a>
     </div>
   </div>
 
@@ -167,6 +274,14 @@
       <ul>
         
           <li>
+            <a href="/2021/07/12/Java%20LocalDate/">Java LocalDate</a>
+          </li>
+        
+          <li>
+            <a href="/2021/07/05/Avue%20Template/">Avue Dict 字典配置</a>
+          </li>
+        
+          <li>
             <a href="/2021/07/02/Kettle%20Oracle2Mysql/">Kettle 数据迁移</a>
           </li>
         
@@ -176,14 +291,6 @@
         
           <li>
             <a href="/2021/06/25/Docker%20Start%20Error/">Docker Start Error Docker 启动失败</a>
-          </li>
-        
-          <li>
-            <a href="/2021/06/11/Docker%20Nginx/">Docker Nginx</a>
-          </li>
-        
-          <li>
-            <a href="/2021/06/10/Docker%20Jenkins%20Install/">Docker Jenkins 部署</a>
           </li>
         
       </ul>
