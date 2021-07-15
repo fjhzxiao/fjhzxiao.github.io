@@ -66,9 +66,294 @@
       <div class="outer">
         <section id="main">
   
-    <article id="java-UReport2" class="article article-type-java" itemscope itemprop="blogPost">
+    <article id="Java-Java/Java8 Stream Page Iterator" class="article article-type-Java" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2021/04/14/UReport2/" class="article-date">
+    <a href="/2021/05/13/Java/Java8%20Stream%20Page%20Iterator/" class="article-date">
+  <time datetime="2021-05-13T08:06:38.000Z" itemprop="datePublished">2021-05-13</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java/">Java</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/05/13/Java/Java8%20Stream%20Page%20Iterator/">Java List 分页 遍历</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id=""><a href="#" class="headerlink" title=""></a></h3><h3 id="前言：-有这样一个需求，一次性查询出所有数据，然后分页遍历数据"><a href="#前言：-有这样一个需求，一次性查询出所有数据，然后分页遍历数据" class="headerlink" title="前言： 有这样一个需求，一次性查询出所有数据，然后分页遍历数据"></a>前言： 有这样一个需求，一次性查询出所有数据，然后分页遍历数据</h3><ol>
+<li><p>java stream skip，  limit </p>
+<h4 id="通过skip跳过数据，limit限制访问的数据，外层套一个页码循环，实现分页遍历List"><a href="#通过skip跳过数据，limit限制访问的数据，外层套一个页码循环，实现分页遍历List" class="headerlink" title="通过skip跳过数据，limit限制访问的数据，外层套一个页码循环，实现分页遍历List"></a>通过skip跳过数据，limit限制访问的数据，外层套一个页码循环，实现分页遍历List</h4></li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StreamExample</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">		<span class="comment">/**</span></span><br><span class="line"><span class="comment">     * List分页遍历</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">page</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        List&lt;Integer&gt; is = Arrays.asList(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>, <span class="number">11</span>, <span class="number">12</span>);</span><br><span class="line">        <span class="comment">// 每页的数据</span></span><br><span class="line">        <span class="keyword">int</span> size = <span class="number">5</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> page = <span class="number">0</span>; page &lt; (is.size() - <span class="number">1</span>) / size + <span class="number">1</span>; page++) &#123;</span><br><span class="line">            is.stream().skip(page * size).limit(size).forEach(System.out::println);</span><br><span class="line">            System.out.println();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://hzxiao.top/2021/05/13/Java/Java8%20Stream%20Page%20Iterator/" data-id="ckr489q6d00198we58uqo3w9b" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/" rel="tag">Java</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="JavaScript-Java/JavaScript iterable" class="article article-type-JavaScript" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/04/29/Java/JavaScript%20iterable/" class="article-date">
+  <time datetime="2021-04-29T01:39:38.000Z" itemprop="datePublished">2021-04-29</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/JavaScript/">JavaScript</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/04/29/Java/JavaScript%20iterable/">JavaScript 循环 iterable</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="聊聊js中的循环，数组遍历"><a href="#聊聊js中的循环，数组遍历" class="headerlink" title="聊聊js中的循环，数组遍历"></a>聊聊js中的循环，数组遍历</h2><p>代码的组成无非就是，顺序，选择，循环。其中最重要的就是循环语句。</p>
+<p>在js中，循环主要有，for, while。在es6里有一些新的方式。</p>
+<h3 id="1、传统循环-for"><a href="#1、传统循环-for" class="headerlink" title="1、传统循环 for"></a>1、传统循环 for</h3><p>优点：方便获取数据下标。</p>
+<p>缺点：容易存在变量污染。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>];</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; arr.length; i++) &#123;</span><br><span class="line">  <span class="built_in">console</span>.info(arr[i]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// logs 1,2,3,4,5</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="2、while-与for类似，这里不赘述"><a href="#2、while-与for类似，这里不赘述" class="headerlink" title="2、while 与for类似，这里不赘述"></a>2、while 与for类似，这里不赘述</h3><h3 id="3、Arrays对象内置的-forEach，调用方法，针对每一个元素执行。"><a href="#3、Arrays对象内置的-forEach，调用方法，针对每一个元素执行。" class="headerlink" title="3、Arrays对象内置的  forEach，调用方法，针对每一个元素执行。"></a>3、Arrays对象内置的  forEach，调用方法，针对每一个元素执行。</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>];  </span><br><span class="line">arr.forEach(<span class="function">(<span class="params">value, index, array</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// value 当前遍历值</span></span><br><span class="line">  <span class="comment">// index 下标</span></span><br><span class="line">  <span class="comment">// array 数组对象</span></span><br><span class="line">  <span class="built_in">console</span>.info(value);</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// logs 1,2,3,4,5</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="4、some-every"><a href="#4、some-every" class="headerlink" title="4、some, every"></a>4、some, every</h3><p>在 for 循环中可以通过break进行提前结束循环。continue结束当前循环。</p>
+<p>在es6中， some，every 本质是判断所有元素是否符合条件， some 只要有一个返回true 就结束循环。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// some，在满足条件后就会结束循环，every则相反，有一个不满足则结束</span></span><br><span class="line"><span class="keyword">let</span> arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>];</span><br><span class="line">arr.some(<span class="function"><span class="params">v</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.info(v);</span><br><span class="line">  <span class="keyword">return</span> v &gt; <span class="number">2</span>;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// logs 1,2,3</span></span><br></pre></td></tr></table></figure>
+
+<p>every 只要有一个返回 false就结束循环。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>];</span><br><span class="line">arr.every(<span class="function"><span class="params">v</span> =&gt;</span> &#123; </span><br><span class="line">  <span class="built_in">console</span>.info(v);</span><br><span class="line">  <span class="keyword">return</span> v &lt; <span class="number">3</span>;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// logs 1,2,3</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="5、map-转换，遍历每一个元素，做对应的转换，返回结果"><a href="#5、map-转换，遍历每一个元素，做对应的转换，返回结果" class="headerlink" title="5、map 转换，遍历每一个元素，做对应的转换，返回结果"></a>5、map 转换，遍历每一个元素，做对应的转换，返回结果</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>];</span><br><span class="line">arr.map(<span class="function"><span class="params">v</span> =&gt;</span> v + <span class="number">1</span>).forEach(<span class="function"><span class="params">v</span> =&gt;</span> <span class="built_in">console</span>.info(v));</span><br><span class="line"><span class="comment">// logs 2,3,4,5,6,7</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="6、filter-过滤，过滤出符合条件的项"><a href="#6、filter-过滤，过滤出符合条件的项" class="headerlink" title="6、filter 过滤，过滤出符合条件的项"></a>6、filter 过滤，过滤出符合条件的项</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>];</span><br><span class="line">arr.filter(<span class="function"><span class="params">v</span> =&gt;</span> v &gt; <span class="number">3</span>).forEach(<span class="function"><span class="params">v</span> =&gt;</span> <span class="built_in">console</span>.info(v));</span><br><span class="line"><span class="comment">// logs 4,5,6</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="7、for-in-、for-of-遍历"><a href="#7、for-in-、for-of-遍历" class="headerlink" title="7、for..in 、for..of  遍历"></a>7、for..in 、for..of  遍历</h3><p> for..in 迭代自身属性，不建议用于遍历数组。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> obj = &#123;</span><br><span class="line">  a: <span class="number">1</span>,</span><br><span class="line">  b: <span class="number">2</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">let</span> k <span class="keyword">in</span> obj) &#123;</span><br><span class="line">  <span class="built_in">console</span>.info(k);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// logs a,b</span></span><br></pre></td></tr></table></figure>
+
+<p> for..of 在可迭代对象（包括 Array，Map，Set，String，TypedArray，arguments 对象等遍历。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> arr = [<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>];</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">let</span> v <span class="keyword">of</span> arr) &#123;</span><br><span class="line">  <span class="built_in">console</span>.info(v);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// logs a,b,c</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> iterable = <span class="string">&quot;abc&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> v <span class="keyword">of</span> iterable) &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(v);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// logs a,b,c</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://hzxiao.top/2021/04/29/Java/JavaScript%20iterable/" data-id="ckr489q6e001e8we50x764u23" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="Kettle-Kettle/Kettle InputUpdate" class="article article-type-Kettle" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/04/27/Kettle/Kettle%20InputUpdate/" class="article-date">
+  <time datetime="2021-04-27T09:03:38.000Z" itemprop="datePublished">2021-04-27</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Kettle/">Kettle</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/04/27/Kettle/Kettle%20InputUpdate/">Kettle 插入/更新(Kettle Insert/Update)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Kettle Input/Update</p>
+<p>插入与更新，判断目标数据与原数据一致，强制更新。</p>
+<p>与同步最大的区别是，原数据如果删除，目标数据不会删除。</p>
+<p>1、自行创建 source,target 表</p>
+<p>2、拖入 TableInput 配置数据库连接，SQL</p>
+<p><img src="/img/image-20210427114151451.png" alt="image-20210427114151451"></p>
+<p>3、拖入 Input/Update</p>
+<p><img src="/img/image-20210427114146642.png" alt="image-20210427114146642"></p>
+<p>4、执行 Kettle发现，source，target 保持一致，source删除，target并不会删除</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://hzxiao.top/2021/04/27/Kettle/Kettle%20InputUpdate/" data-id="ckr489q6p00278we5gbk608mg" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Kettle/" rel="tag">Kettle</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="Kettle-Kettle/Kettle Data Sync" class="article article-type-Kettle" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/04/27/Kettle/Kettle%20Data%20Sync/" class="article-date">
+  <time datetime="2021-04-27T02:03:38.000Z" itemprop="datePublished">2021-04-27</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Kettle/">Kettle</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/04/27/Kettle/Kettle%20Data%20Sync/">Kettle 数据同步(Kettle Synchronize after merge)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Kettle 数据同步</p>
+<p>同步的概念，原数据表（数据变化，新增，修改，删除），目标数据表（数据不变化），经过kettle处理，保持目标数据表与原数据表一致。</p>
+<p>1、新建数据表 user_source, user_target   </p>
+<p>id作为主键，其他字段若干</p>
+<p>2、Kettle 拖入两个 Table Input，修改名称为 Source， Target</p>
+<p><img src="/img/image-20210427111123181.png" alt="image-20210427111123181"></p>
+<p>配置数据库连接地址，编写SQL，分别查询 user_source, user_target   </p>
+<p>3、拖入合并（比较）</p>
+<p>从Joins 拖入 Merge rows（diff）</p>
+<p><img src="/img/image-20210427112308832.png" alt="image-20210427112308832"></p>
+<p>注意： 原始数据，以及对比数据，不能弄错。</p>
+<p>Reference rows origin 需要被同步的表</p>
+<p>Compare rows origin 会变更数据的原始表</p>
+<p>Flag fieldname 系统默认，添加数据差异字段（identical， new，changed， deleted）不要修改</p>
+<p>Keys to match 比较数据是否相同的字段</p>
+<p>Values to compare 需要更新的字段</p>
+<p><img src="/img/image-20210427111732584.png" alt="image-20210427111732584"></p>
+<p>添加日志可以查看合并后的数据</p>
+<p>4、同步数据</p>
+<p>拖入 Synchronize after merge 连接 Merge rows</p>
+<p><img src="/img/image-20210427111903879.png" alt="image-20210427111903879"></p>
+<p>配置同步</p>
+<p>General 基本配置</p>
+<p><img src="/img/image-20210427112107717.png" alt="image-20210427112107717"></p>
+<p>Advanced</p>
+<p><img src="/img/image-20210427111955219.png" alt="image-20210427111955219"></p>
+<p>配置完成，即可执行。</p>
+<p>测试，修改  user_source  里面的任意数据，执行 Kettle 转换，user_target 数据会修改，与 user_source 同步。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://hzxiao.top/2021/04/27/Kettle/Kettle%20Data%20Sync/" data-id="ckr489q6n00238we5fs034ptl" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Kettle/" rel="tag">Kettle</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="java-UReport2/UReport2 Note1" class="article article-type-java" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/04/16/UReport2/UReport2%20Note1/" class="article-date">
+  <time datetime="2021-04-16T01:24:38.000Z" itemprop="datePublished">2021-04-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/ureport2/">ureport2</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/04/16/UReport2/UReport2%20Note1/">UReport2 自定义存储器无效</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="定义一个内存存储器"><a href="#定义一个内存存储器" class="headerlink" title="定义一个内存存储器"></a>定义一个内存存储器</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.hzxiao.third.ureport2.file;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.bstek.ureport.provider.report.ReportFile;</span><br><span class="line"><span class="keyword">import</span> com.bstek.ureport.provider.report.ReportProvider;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.io.IOUtils;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Component;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.InputStream;</span><br><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"><span class="keyword">import</span> java.util.stream.Collectors;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> ZhenXiao.Huang</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@since</span> 2021年4月16日</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MomoryReportProvider</span> <span class="keyword">implements</span> <span class="title">ReportProvider</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> List&lt;ReportFile&gt; files = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Map&lt;String, String&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> InputStream <span class="title">loadReport</span><span class="params">(String file)</span> </span>&#123;</span><br><span class="line">        file = getFileName(file);</span><br><span class="line">        <span class="keyword">return</span> IOUtils.toInputStream(file);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">deleteReport</span><span class="params">(String file)</span> </span>&#123;</span><br><span class="line">        files = files.stream().filter(v -&gt; !v.equals(file)).collect(Collectors.toList());</span><br><span class="line">        map.remove(file);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;ReportFile&gt; <span class="title">getReportFiles</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> files;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">saveReport</span><span class="params">(String file, String content)</span> </span>&#123;</span><br><span class="line">        ReportFile rf = <span class="keyword">new</span> ReportFile(getFileName(file), <span class="keyword">new</span> Date());</span><br><span class="line">        files.add(rf);</span><br><span class="line">        map.put(getFileName(file), content);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;MomoryReportProvider&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">disabled</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getPrefix</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;momory:&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> file</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getFileName</span><span class="params">(String file)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (file.startsWith(getPrefix())) &#123;</span><br><span class="line">            <span class="keyword">return</span> file.substring(getPrefix().length(), file.length());</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> file;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>注意：getPrefix 每个必须唯一！！系统默认已经有 file: 。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.bstek.ureport.console.designer;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 省略大量代码</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Jacky.gao</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@since</span> 2017年1月25日</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DesignerServletAction</span> <span class="keyword">extends</span> <span class="title">RenderPageServletAction</span> </span>&#123;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 省略大量代码</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">saveReportFile</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">		<span class="comment">// 省略大量代码</span></span><br><span class="line">		<span class="keyword">for</span>(ReportProvider provider:reportProviders)&#123;</span><br><span class="line">      <span class="comment">// 储存器按照prefix进行获取</span></span><br><span class="line">			<span class="keyword">if</span>(file.startsWith(provider.getPrefix()))&#123;</span><br><span class="line">				targetReportProvider=provider;</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 省略大量代码</span></span><br><span class="line">  </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>分析源码可得，所有的存储器按照prefix进行配置。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://hzxiao.top/2021/04/16/UReport2/UReport2%20Note1/" data-id="ckr489q6k001w8we5884vd89s" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ureport2/" rel="tag">ureport2</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="java-UReport2/UReport2" class="article article-type-java" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/04/14/UReport2/UReport2/" class="article-date">
   <time datetime="2021-04-14T09:03:38.000Z" itemprop="datePublished">2021-04-14</time>
 </a>
     
@@ -84,7 +369,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2021/04/14/UReport2/">UReport2</a>
+      <a class="article-title" href="/2021/04/14/UReport2/UReport2/">UReport2</a>
     </h1>
   
 
@@ -108,7 +393,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://hzxiao.top/2021/04/14/UReport2/" data-id="ckniaifgo0003e0e52k2g4ttn" class="article-share-link">Share</a>
+      <a data-url="http://hzxiao.top/2021/04/14/UReport2/UReport2/" data-id="ckr489q6l001x8we5cyo22svj" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ureport2/" rel="tag">ureport2</a></li></ul>
@@ -161,7 +446,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://hzxiao.top/2021/04/14/HelloWorld%20NodeJs/" data-id="ckni9kk3m0006yce5cgyh5ewg" class="article-share-link">Share</a>
+      <a data-url="http://hzxiao.top/2021/04/14/HelloWorld%20NodeJs/" data-id="ckr489q5q00018we564pfd4af" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/NodeJs/" rel="tag">NodeJs</a></li></ul>
@@ -173,9 +458,9 @@
 
 
   
-    <article id="helloworld-Kettle" class="article article-type-helloworld" itemscope itemprop="blogPost">
+    <article id="helloworld-Kettle/Kettle" class="article article-type-helloworld" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2021/04/01/Kettle/" class="article-date">
+    <a href="/2021/04/01/Kettle/Kettle/" class="article-date">
   <time datetime="2021-04-01T09:03:38.000Z" itemprop="datePublished">2021-04-01</time>
 </a>
     
@@ -191,7 +476,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2021/04/01/Kettle/">HelloWorld Hexo</a>
+      <a class="article-title" href="/2021/04/01/Kettle/Kettle/">HelloWorld Hexo</a>
     </h1>
   
 
@@ -205,7 +490,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://hzxiao.top/2021/04/01/Kettle/" data-id="ckom75mdu0001q8e5eero0xck" class="article-share-link">Share</a>
+      <a data-url="http://hzxiao.top/2021/04/01/Kettle/Kettle/" data-id="ckr489q6r002d8we5fr1nakbr" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li></ul>
@@ -232,7 +517,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Avue/">Avue</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kettle/">Kettle</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Nginx-Vue/">Nginx Vue</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/SpringBoot/">SpringBoot</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/hexo/">hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/ureport2/">ureport2</a></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Avue/">Avue</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kettle/">Kettle</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Nginx-Vue/">Nginx Vue</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/SpringBoot/">SpringBoot</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/UReport2/">UReport2</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/hexo/">hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/ureport2/">ureport2</a></li></ul>
     </div>
   </div>
 
@@ -242,7 +527,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Avue/" rel="tag">Avue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kettle/" rel="tag">Kettle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx-Vue/" rel="tag">Nginx Vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NodeJs/" rel="tag">NodeJs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/" rel="tag">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringBoot/" rel="tag">SpringBoot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ureport2/" rel="tag">ureport2</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Avue/" rel="tag">Avue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kettle/" rel="tag">Kettle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx-Vue/" rel="tag">Nginx Vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NodeJs/" rel="tag">NodeJs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/" rel="tag">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringBoot/" rel="tag">SpringBoot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UReport2/" rel="tag">UReport2</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ureport2/" rel="tag">ureport2</a></li></ul>
     </div>
   </div>
 
@@ -252,7 +537,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Avue/" style="font-size: 13.33px;">Avue</a> <a href="/tags/Docker/" style="font-size: 20px;">Docker</a> <a href="/tags/Hexo/" style="font-size: 13.33px;">Hexo</a> <a href="/tags/Java/" style="font-size: 13.33px;">Java</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/Kettle/" style="font-size: 16.67px;">Kettle</a> <a href="/tags/Nginx-Vue/" style="font-size: 10px;">Nginx Vue</a> <a href="/tags/NodeJs/" style="font-size: 10px;">NodeJs</a> <a href="/tags/Spring/" style="font-size: 10px;">Spring</a> <a href="/tags/SpringBoot/" style="font-size: 10px;">SpringBoot</a> <a href="/tags/ureport2/" style="font-size: 13.33px;">ureport2</a>
+      <a href="/tags/Avue/" style="font-size: 17.5px;">Avue</a> <a href="/tags/Docker/" style="font-size: 20px;">Docker</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/Java/" style="font-size: 12.5px;">Java</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/Kettle/" style="font-size: 15px;">Kettle</a> <a href="/tags/Nginx-Vue/" style="font-size: 10px;">Nginx Vue</a> <a href="/tags/NodeJs/" style="font-size: 10px;">NodeJs</a> <a href="/tags/Spring/" style="font-size: 10px;">Spring</a> <a href="/tags/SpringBoot/" style="font-size: 12.5px;">SpringBoot</a> <a href="/tags/UReport2/" style="font-size: 10px;">UReport2</a> <a href="/tags/ureport2/" style="font-size: 12.5px;">ureport2</a>
     </div>
   </div>
 
@@ -274,23 +559,23 @@
       <ul>
         
           <li>
-            <a href="/2021/07/12/Java%20LocalDate/">Java LocalDate</a>
+            <a href="/2021/07/15/UReport2/UReport2%20DataSource/">UReport2 表达式获取数据集</a>
           </li>
         
           <li>
-            <a href="/2021/07/05/Avue%20Template/">Avue Dict 字典配置</a>
+            <a href="/2021/07/14/Avue/Avue%20Detail%20Table/">Avue 关联表</a>
           </li>
         
           <li>
-            <a href="/2021/07/02/Kettle%20Oracle2Mysql/">Kettle 数据迁移</a>
+            <a href="/2021/07/14/Avue/Avue%20All%20Api/">Avue Template</a>
           </li>
         
           <li>
-            <a href="/2021/06/26/Hexo%20HelloWorld/">Avue</a>
+            <a href="/2021/07/14/Avue/Avue%20Dict/">Avue 表格所有配置</a>
           </li>
         
           <li>
-            <a href="/2021/06/25/Docker%20Start%20Error/">Docker Start Error Docker 启动失败</a>
+            <a href="/2021/07/14/Avue/Avue%20Mini%20Crud/">Avue 最小表格模板</a>
           </li>
         
       </ul>

@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Docker Start Error Docker 启动失败 | Hzx8964&#39;Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="前言：123# Docker安装完成后，docker ps报错，docker未启动成功。[root@localhost install]# docker psCannot connect to the Docker daemon at unix:&#x2F;&#x2F;&#x2F;var&#x2F;run&#x2F;docker.sock. Is the docker daemon running?  1、执行命令查看错误原因  $ servic">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker Start Error Docker 启动失败">
+<meta property="og:url" content="http://hzxiao.top/2021/06/25/Docker/Docker%20Start%20Error/index.html">
+<meta property="og:site_name" content="Hzx8964&#39;Blog">
+<meta property="og:description" content="前言：123# Docker安装完成后，docker ps报错，docker未启动成功。[root@localhost install]# docker psCannot connect to the Docker daemon at unix:&#x2F;&#x2F;&#x2F;var&#x2F;run&#x2F;docker.sock. Is the docker daemon running?  1、执行命令查看错误原因  $ servic">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-06-25T08:06:38.000Z">
+<meta property="article:modified_time" content="2021-06-25T02:28:06.231Z">
+<meta property="article:author" content="hzx">
+<meta property="article:tag" content="Docker">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hzx8964&#39;Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hzx8964&#39;Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://hzxiao.top"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="Docker-Docker/Docker Start Error" class="article article-type-Docker" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/06/25/Docker/Docker%20Start%20Error/" class="article-date">
+  <time datetime="2021-06-25T08:06:38.000Z" itemprop="datePublished">2021-06-25</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Docker/">Docker</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Docker Start Error Docker 启动失败
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="前言："><a href="#前言：" class="headerlink" title="前言："></a>前言：</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> Docker安装完成后，docker ps报错，docker未启动成功。</span></span><br><span class="line">[root@localhost install]# docker ps</span><br><span class="line">Cannot connect to the Docker daemon at unix:///var/run/docker.sock. Is the docker daemon running?</span><br></pre></td></tr></table></figure>
+
+<p>1、执行命令查看错误原因  $ service docker status</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost install]# systemctl status docker</span><br><span class="line">● docker.service - Docker Application Container Engine</span><br><span class="line">   Loaded: loaded (/usr/lib/systemd/system/docker.service; enabled; vendor preset: disabled)</span><br><span class="line">   Active: failed (Result: exit-code) since Fri 2021-06-25 10:15:27 CST; 1min 15s ago</span><br><span class="line">     Docs: https://docs.docker.com</span><br><span class="line">  Process: 2331 ExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock (code=exited, status=127)</span><br><span class="line"> Main PID: 2331 (code=exited, status=127)</span><br><span class="line"></span><br><span class="line">Jun 25 10:15:27 localhost.localdomain systemd[1]: Starting Docker Application Container Engine...</span><br><span class="line">Jun 25 10:15:27 localhost.localdomain dockerd[2331]: /usr/bin/dockerd: error while loading shared libraries: libseccomp.so.2: cannot open shared object file: No such... directory</span><br><span class="line">Jun 25 10:15:27 localhost.localdomain systemd[1]: docker.service: main process exited, code=exited, status=127/n/a</span><br><span class="line">Jun 25 10:15:27 localhost.localdomain systemd[1]: Stopped Docker Application Container Engine.</span><br><span class="line">Jun 25 10:15:27 localhost.localdomain systemd[1]: Unit docker.service entered failed state.</span><br><span class="line">Jun 25 10:15:27 localhost.localdomain systemd[1]: docker.service failed.</span><br><span class="line">Hint: Some lines were ellipsized, use -l to show in full.</span><br><span class="line">[root@localhost install]# </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>2、查看具体启动失败原因，发现缺少 libseccomp.so.2</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost install]# journalctl -xe</span><br><span class="line">Jun 25 10:06:15 localhost.localdomain systemd[1]: Starting containerd container runtime...</span><br><span class="line">-- Subject: Unit containerd.service has begun start-up</span><br><span class="line">-- Defined-By: systemd</span><br><span class="line">-- Support: http://lists.freedesktop.org/mailman/listinfo/systemd-devel</span><br><span class="line">-- </span><br><span class="line">-- Unit containerd.service has begun starting up.</span><br><span class="line">Jun 25 10:06:15 localhost.localdomain systemd[1]: Starting Docker Socket for the API.</span><br><span class="line">-- Subject: Unit docker.socket has begun start-up</span><br><span class="line">-- Defined-By: systemd</span><br><span class="line">-- Support: http://lists.freedesktop.org/mailman/listinfo/systemd-devel</span><br><span class="line">-- </span><br><span class="line">-- Unit docker.socket has begun starting up.</span><br><span class="line">Jun 25 10:06:15 localhost.localdomain systemd[1]: Started containerd container runtime.</span><br><span class="line">-- Subject: Unit containerd.service has finished start-up</span><br><span class="line">-- Defined-By: systemd</span><br><span class="line">-- Support: http://lists.freedesktop.org/mailman/listinfo/systemd-devel</span><br><span class="line">-- </span><br><span class="line">-- Unit containerd.service has finished starting up.</span><br><span class="line">-- </span><br><span class="line">-- The start-up result is done.</span><br><span class="line">Jun 25 10:06:15 localhost.localdomain containerd[2052]: /usr/bin/containerd: error while loading shared libraries: libseccomp.so.2: cannot open shared object file: No such file o</span><br><span class="line">Jun 25 10:06:15 localhost.localdomain systemd[1]: Listening on Docker Socket for the API.</span><br><span class="line">-- Subject: Unit docker.socket has finished start-up</span><br><span class="line">-- Defined-By: systemd</span><br><span class="line">-- Support: http://lists.freedesktop.org/mailman/listinfo/systemd-devel</span><br><span class="line">-- </span><br><span class="line">-- Unit docker.socket has finished starting up.</span><br><span class="line">-- </span><br><span class="line">-- The start-up result is done.</span><br><span class="line">Jun 25 10:06:15 localhost.localdomain systemd[1]: containerd.service: main process exited, code=exited, status=127/n/a</span><br><span class="line">Jun 25 10:06:15 localhost.localdomain systemd[1]: Unit containerd.service entered failed state.</span><br><span class="line">Jun 25 10:06:15 localhost.localdomain systemd[1]: containerd.service failed.</span><br><span class="line">Jun 25 10:06:15 localhost.localdomain systemd[1]: start request repeated too quickly for docker.service</span><br><span class="line">Jun 25 10:06:15 localhost.localdomain systemd[1]: Failed to start Docker Application Container Engine.</span><br><span class="line">-- Subject: Unit docker.service has failed</span><br><span class="line">-- Defined-By: systemd</span><br><span class="line">-- Support: http://lists.freedesktop.org/mailman/listinfo/systemd-devel</span><br><span class="line">-- </span><br><span class="line">-- Unit docker.service has failed.</span><br><span class="line">-- </span><br><span class="line">-- The result is failed.</span><br><span class="line">Jun 25 10:06:15 localhost.localdomain systemd[1]: Unit docker.service entered failed state.</span><br><span class="line">Jun 25 10:06:15 localhost.localdomain systemd[1]: docker.service failed.</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>3、安装 yum install libseccomp-2.3.1-4.el7.x86_64</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost install]# yum install libseccomp-2.3.1-4.el7.x86_64</span><br><span class="line">Loaded plugins: fastestmirror</span><br><span class="line">Loading mirror speeds from cached hostfile</span><br><span class="line"> * base: mirrors.ustc.edu.cn</span><br><span class="line"> * epel: mirrors.ustc.edu.cn</span><br><span class="line"> * extras: mirrors.ustc.edu.cn</span><br><span class="line"> * updates: mirrors.ustc.edu.cn</span><br><span class="line">Resolving Dependencies</span><br><span class="line"><span class="meta">--&gt;</span><span class="bash"> Running transaction check</span></span><br><span class="line"><span class="meta">---&gt;</span><span class="bash"> Package libseccomp.x86_64 0:2.3.1-4.el7 will be installed</span></span><br><span class="line"><span class="meta">--&gt;</span><span class="bash"> Finished Dependency Resolution</span></span><br><span class="line"></span><br><span class="line">Dependencies Resolved</span><br><span class="line"></span><br><span class="line">==================================================================================================================================================================================</span><br><span class="line"> Package                                      Arch                                     Version                                       Repository                              Size</span><br><span class="line">==================================================================================================================================================================================</span><br><span class="line">Installing:</span><br><span class="line"> libseccomp                                   x86_64                                   2.3.1-4.el7                                   base                                    56 k</span><br><span class="line"></span><br><span class="line">Transaction Summary</span><br><span class="line">==================================================================================================================================================================================</span><br><span class="line">Install  1 Package</span><br><span class="line"></span><br><span class="line">Total download size: 56 k</span><br><span class="line">Installed size: 297 k</span><br><span class="line">Is this ok [y/d/N]: y</span><br><span class="line">Downloading packages:</span><br><span class="line">libseccomp-2.3.1-4.el7.x86_64.rpm                                                                                                                          |  56 kB  00:00:00     </span><br><span class="line">Running transaction check</span><br><span class="line">Running transaction test</span><br><span class="line">Transaction test succeeded</span><br><span class="line">Running transaction</span><br><span class="line">  Installing : libseccomp-2.3.1-4.el7.x86_64                                                                                                                                  1/1 </span><br><span class="line">  Verifying  : libseccomp-2.3.1-4.el7.x86_64                                                                                                                                  1/1 </span><br><span class="line"></span><br><span class="line">Installed:</span><br><span class="line">  libseccomp.x86_64 0:2.3.1-4.el7                                                                                                                                                 </span><br><span class="line"></span><br><span class="line">Complete!</span><br><span class="line">[root@localhost install]# </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>4、重新启动docker服务</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost install]# systemctl start docker</span><br><span class="line">[root@localhost install]# </span><br><span class="line">[root@localhost install]# </span><br><span class="line">[root@localhost install]# docker ps</span><br><span class="line">CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES</span><br><span class="line">[root@localhost install]#  </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>5、Docker启动原因太多了，要根据具体的错误提示去修改。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://hzxiao.top/2021/06/25/Docker/Docker%20Start%20Error/" data-id="ckr489q6a00118we5eygwbmrb" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/06/26/Hexo%20HelloWorld/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Avue
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/06/11/Docker/Docker%20Nginx/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Docker Nginx</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Avue/">Avue</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kettle/">Kettle</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Nginx-Vue/">Nginx Vue</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/SpringBoot/">SpringBoot</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/UReport2/">UReport2</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/hexo/">hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/ureport2/">ureport2</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Avue/" rel="tag">Avue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kettle/" rel="tag">Kettle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx-Vue/" rel="tag">Nginx Vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NodeJs/" rel="tag">NodeJs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/" rel="tag">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringBoot/" rel="tag">SpringBoot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UReport2/" rel="tag">UReport2</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ureport2/" rel="tag">ureport2</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Avue/" style="font-size: 17.5px;">Avue</a> <a href="/tags/Docker/" style="font-size: 20px;">Docker</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/Java/" style="font-size: 12.5px;">Java</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/Kettle/" style="font-size: 15px;">Kettle</a> <a href="/tags/Nginx-Vue/" style="font-size: 10px;">Nginx Vue</a> <a href="/tags/NodeJs/" style="font-size: 10px;">NodeJs</a> <a href="/tags/Spring/" style="font-size: 10px;">Spring</a> <a href="/tags/SpringBoot/" style="font-size: 12.5px;">SpringBoot</a> <a href="/tags/UReport2/" style="font-size: 10px;">UReport2</a> <a href="/tags/ureport2/" style="font-size: 12.5px;">ureport2</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">七月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">六月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">五月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/07/15/UReport2/UReport2%20DataSource/">UReport2 表达式获取数据集</a>
+          </li>
+        
+          <li>
+            <a href="/2021/07/14/Avue/Avue%20Detail%20Table/">Avue 关联表</a>
+          </li>
+        
+          <li>
+            <a href="/2021/07/14/Avue/Avue%20All%20Api/">Avue Template</a>
+          </li>
+        
+          <li>
+            <a href="/2021/07/14/Avue/Avue%20Dict/">Avue 表格所有配置</a>
+          </li>
+        
+          <li>
+            <a href="/2021/07/14/Avue/Avue%20Mini%20Crud/">Avue 最小表格模板</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 hzx<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

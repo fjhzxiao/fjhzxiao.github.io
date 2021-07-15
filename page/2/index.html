@@ -66,9 +66,276 @@
       <div class="outer">
         <section id="main">
   
-    <article id="Docker-Docker HelloWorld" class="article article-type-Docker" itemscope itemprop="blogPost">
+    <article id="Docker-Docker/Docker Start Error" class="article article-type-Docker" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2021/06/09/Docker%20HelloWorld/" class="article-date">
+    <a href="/2021/06/25/Docker/Docker%20Start%20Error/" class="article-date">
+  <time datetime="2021-06-25T08:06:38.000Z" itemprop="datePublished">2021-06-25</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Docker/">Docker</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/06/25/Docker/Docker%20Start%20Error/">Docker Start Error Docker 启动失败</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="前言："><a href="#前言：" class="headerlink" title="前言："></a>前言：</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> Docker安装完成后，docker ps报错，docker未启动成功。</span></span><br><span class="line">[root@localhost install]# docker ps</span><br><span class="line">Cannot connect to the Docker daemon at unix:///var/run/docker.sock. Is the docker daemon running?</span><br></pre></td></tr></table></figure>
+
+<p>1、执行命令查看错误原因  $ service docker status</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost install]# systemctl status docker</span><br><span class="line">● docker.service - Docker Application Container Engine</span><br><span class="line">   Loaded: loaded (/usr/lib/systemd/system/docker.service; enabled; vendor preset: disabled)</span><br><span class="line">   Active: failed (Result: exit-code) since Fri 2021-06-25 10:15:27 CST; 1min 15s ago</span><br><span class="line">     Docs: https://docs.docker.com</span><br><span class="line">  Process: 2331 ExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock (code=exited, status=127)</span><br><span class="line"> Main PID: 2331 (code=exited, status=127)</span><br><span class="line"></span><br><span class="line">Jun 25 10:15:27 localhost.localdomain systemd[1]: Starting Docker Application Container Engine...</span><br><span class="line">Jun 25 10:15:27 localhost.localdomain dockerd[2331]: /usr/bin/dockerd: error while loading shared libraries: libseccomp.so.2: cannot open shared object file: No such... directory</span><br><span class="line">Jun 25 10:15:27 localhost.localdomain systemd[1]: docker.service: main process exited, code=exited, status=127/n/a</span><br><span class="line">Jun 25 10:15:27 localhost.localdomain systemd[1]: Stopped Docker Application Container Engine.</span><br><span class="line">Jun 25 10:15:27 localhost.localdomain systemd[1]: Unit docker.service entered failed state.</span><br><span class="line">Jun 25 10:15:27 localhost.localdomain systemd[1]: docker.service failed.</span><br><span class="line">Hint: Some lines were ellipsized, use -l to show in full.</span><br><span class="line">[root@localhost install]# </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>2、查看具体启动失败原因，发现缺少 libseccomp.so.2</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost install]# journalctl -xe</span><br><span class="line">Jun 25 10:06:15 localhost.localdomain systemd[1]: Starting containerd container runtime...</span><br><span class="line">-- Subject: Unit containerd.service has begun start-up</span><br><span class="line">-- Defined-By: systemd</span><br><span class="line">-- Support: http://lists.freedesktop.org/mailman/listinfo/systemd-devel</span><br><span class="line">-- </span><br><span class="line">-- Unit containerd.service has begun starting up.</span><br><span class="line">Jun 25 10:06:15 localhost.localdomain systemd[1]: Starting Docker Socket for the API.</span><br><span class="line">-- Subject: Unit docker.socket has begun start-up</span><br><span class="line">-- Defined-By: systemd</span><br><span class="line">-- Support: http://lists.freedesktop.org/mailman/listinfo/systemd-devel</span><br><span class="line">-- </span><br><span class="line">-- Unit docker.socket has begun starting up.</span><br><span class="line">Jun 25 10:06:15 localhost.localdomain systemd[1]: Started containerd container runtime.</span><br><span class="line">-- Subject: Unit containerd.service has finished start-up</span><br><span class="line">-- Defined-By: systemd</span><br><span class="line">-- Support: http://lists.freedesktop.org/mailman/listinfo/systemd-devel</span><br><span class="line">-- </span><br><span class="line">-- Unit containerd.service has finished starting up.</span><br><span class="line">-- </span><br><span class="line">-- The start-up result is done.</span><br><span class="line">Jun 25 10:06:15 localhost.localdomain containerd[2052]: /usr/bin/containerd: error while loading shared libraries: libseccomp.so.2: cannot open shared object file: No such file o</span><br><span class="line">Jun 25 10:06:15 localhost.localdomain systemd[1]: Listening on Docker Socket for the API.</span><br><span class="line">-- Subject: Unit docker.socket has finished start-up</span><br><span class="line">-- Defined-By: systemd</span><br><span class="line">-- Support: http://lists.freedesktop.org/mailman/listinfo/systemd-devel</span><br><span class="line">-- </span><br><span class="line">-- Unit docker.socket has finished starting up.</span><br><span class="line">-- </span><br><span class="line">-- The start-up result is done.</span><br><span class="line">Jun 25 10:06:15 localhost.localdomain systemd[1]: containerd.service: main process exited, code=exited, status=127/n/a</span><br><span class="line">Jun 25 10:06:15 localhost.localdomain systemd[1]: Unit containerd.service entered failed state.</span><br><span class="line">Jun 25 10:06:15 localhost.localdomain systemd[1]: containerd.service failed.</span><br><span class="line">Jun 25 10:06:15 localhost.localdomain systemd[1]: start request repeated too quickly for docker.service</span><br><span class="line">Jun 25 10:06:15 localhost.localdomain systemd[1]: Failed to start Docker Application Container Engine.</span><br><span class="line">-- Subject: Unit docker.service has failed</span><br><span class="line">-- Defined-By: systemd</span><br><span class="line">-- Support: http://lists.freedesktop.org/mailman/listinfo/systemd-devel</span><br><span class="line">-- </span><br><span class="line">-- Unit docker.service has failed.</span><br><span class="line">-- </span><br><span class="line">-- The result is failed.</span><br><span class="line">Jun 25 10:06:15 localhost.localdomain systemd[1]: Unit docker.service entered failed state.</span><br><span class="line">Jun 25 10:06:15 localhost.localdomain systemd[1]: docker.service failed.</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>3、安装 yum install libseccomp-2.3.1-4.el7.x86_64</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost install]# yum install libseccomp-2.3.1-4.el7.x86_64</span><br><span class="line">Loaded plugins: fastestmirror</span><br><span class="line">Loading mirror speeds from cached hostfile</span><br><span class="line"> * base: mirrors.ustc.edu.cn</span><br><span class="line"> * epel: mirrors.ustc.edu.cn</span><br><span class="line"> * extras: mirrors.ustc.edu.cn</span><br><span class="line"> * updates: mirrors.ustc.edu.cn</span><br><span class="line">Resolving Dependencies</span><br><span class="line"><span class="meta">--&gt;</span><span class="bash"> Running transaction check</span></span><br><span class="line"><span class="meta">---&gt;</span><span class="bash"> Package libseccomp.x86_64 0:2.3.1-4.el7 will be installed</span></span><br><span class="line"><span class="meta">--&gt;</span><span class="bash"> Finished Dependency Resolution</span></span><br><span class="line"></span><br><span class="line">Dependencies Resolved</span><br><span class="line"></span><br><span class="line">==================================================================================================================================================================================</span><br><span class="line"> Package                                      Arch                                     Version                                       Repository                              Size</span><br><span class="line">==================================================================================================================================================================================</span><br><span class="line">Installing:</span><br><span class="line"> libseccomp                                   x86_64                                   2.3.1-4.el7                                   base                                    56 k</span><br><span class="line"></span><br><span class="line">Transaction Summary</span><br><span class="line">==================================================================================================================================================================================</span><br><span class="line">Install  1 Package</span><br><span class="line"></span><br><span class="line">Total download size: 56 k</span><br><span class="line">Installed size: 297 k</span><br><span class="line">Is this ok [y/d/N]: y</span><br><span class="line">Downloading packages:</span><br><span class="line">libseccomp-2.3.1-4.el7.x86_64.rpm                                                                                                                          |  56 kB  00:00:00     </span><br><span class="line">Running transaction check</span><br><span class="line">Running transaction test</span><br><span class="line">Transaction test succeeded</span><br><span class="line">Running transaction</span><br><span class="line">  Installing : libseccomp-2.3.1-4.el7.x86_64                                                                                                                                  1/1 </span><br><span class="line">  Verifying  : libseccomp-2.3.1-4.el7.x86_64                                                                                                                                  1/1 </span><br><span class="line"></span><br><span class="line">Installed:</span><br><span class="line">  libseccomp.x86_64 0:2.3.1-4.el7                                                                                                                                                 </span><br><span class="line"></span><br><span class="line">Complete!</span><br><span class="line">[root@localhost install]# </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>4、重新启动docker服务</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost install]# systemctl start docker</span><br><span class="line">[root@localhost install]# </span><br><span class="line">[root@localhost install]# </span><br><span class="line">[root@localhost install]# docker ps</span><br><span class="line">CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES</span><br><span class="line">[root@localhost install]#  </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>5、Docker启动原因太多了，要根据具体的错误提示去修改。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://hzxiao.top/2021/06/25/Docker/Docker%20Start%20Error/" data-id="ckr489q6a00118we5eygwbmrb" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="Docker Nginx-Docker/Docker Nginx" class="article article-type-Docker Nginx" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/06/11/Docker/Docker%20Nginx/" class="article-date">
+  <time datetime="2021-06-11T08:06:38.000Z" itemprop="datePublished">2021-06-11</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Docker/">Docker</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/06/11/Docker/Docker%20Nginx/">Docker Nginx</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="前言：-Nginx-使用docker快速部署"><a href="#前言：-Nginx-使用docker快速部署" class="headerlink" title="前言： Nginx 使用docker快速部署"></a>前言： Nginx 使用docker快速部署</h3><h3 id="docker安装请参考"><a href="#docker安装请参考" class="headerlink" title="docker安装请参考"></a>docker安装请参考</h3><p>前端打包成镜像，或者可以将html目录挂载出来</p>
+<p>Dockerfile </p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> nginx</span><br><span class="line"><span class="keyword">VOLUME</span><span class="bash"> /tmp</span></span><br><span class="line"><span class="keyword">ENV</span> LANG en_US.UTF-<span class="number">8</span></span><br><span class="line"><span class="keyword">ADD</span><span class="bash"> ./dist/ /usr/share/nginx/html/</span></span><br><span class="line"><span class="keyword">EXPOSE</span> <span class="number">80</span></span><br><span class="line"><span class="keyword">EXPOSE</span> <span class="number">443</span></span><br></pre></td></tr></table></figure>
+
+<p>打包前端镜像</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> frontend_dir</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> docker build .</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> docker tag IMAGE_ID IMAGE_NAME:VERSION</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Nginx启动"><a href="#Nginx启动" class="headerlink" title="Nginx启动"></a>Nginx启动</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 8088:80 IMAGE_NAME:VERSION</span><br></pre></td></tr></table></figure>
+
+<h3 id="Nginx-Docker-compose启动"><a href="#Nginx-Docker-compose启动" class="headerlink" title="Nginx Docker-compose启动"></a>Nginx Docker-compose启动</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">docker-compose.yaml</span></span><br><span class="line"><span class="attr">version:</span> <span class="number">3</span></span><br><span class="line"><span class="attr">services:</span> </span><br><span class="line">  <span class="attr">nginx:</span></span><br><span class="line">    <span class="attr">images:</span> <span class="string">nginx</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="number">8088</span><span class="string">:80</span></span><br><span class="line">      <span class="bullet">-</span> <span class="number">443</span><span class="string">:443</span></span><br><span class="line">    <span class="attr">volumnes:</span></span><br><span class="line"><span class="comment">#      - /home/project/html/:/usr/share/nginx/html/</span></span><br><span class="line"><span class="comment">#      - /home/project/nginx/nginx.conf:/etc/nginx/nginx.conf</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">/home/project/nginx/conf.d:/etc/nginx/conf.d</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="创建前端的基于Nginx的镜像，nginx转发配置"><a href="#创建前端的基于Nginx的镜像，nginx转发配置" class="headerlink" title="创建前端的基于Nginx的镜像，nginx转发配置"></a>创建前端的基于Nginx的镜像，nginx转发配置</h3><p>defulat.conf</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen       80;</span><br><span class="line">    server_name  localhost;</span><br><span class="line"></span><br><span class="line">    #charset koi8-r;</span><br><span class="line">    #access_log  &#x2F;var&#x2F;log&#x2F;nginx&#x2F;host.access.log  main;</span><br><span class="line"></span><br><span class="line">    location &#x2F; &#123;</span><br><span class="line">        root &#x2F;usr&#x2F;share&#x2F;nginx&#x2F;html;</span><br><span class="line">        index index.html;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    # 后台地址转发，backend为后台地址</span><br><span class="line">    location &#x2F;api&#x2F; &#123;</span><br><span class="line">        proxy_pass        http:&#x2F;&#x2F;backend&#x2F;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    error_page   500 502 503 504  &#x2F;50x.html;</span><br><span class="line">    location &#x3D; &#x2F;50x.html &#123;</span><br><span class="line">        root   &#x2F;usr&#x2F;share&#x2F;nginx&#x2F;html;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://hzxiao.top/2021/06/11/Docker/Docker%20Nginx/" data-id="ckr489q68000u8we5ccsmc3tu" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="Docker-Docker/Docker Jenkins Start Error " class="article article-type-Docker" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/06/10/Docker/Docker%20Jenkins%20Start%20Error%20/" class="article-date">
+  <time datetime="2021-06-10T01:32:38.000Z" itemprop="datePublished">2021-06-10</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Docker/">Docker</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/06/10/Docker/Docker%20Jenkins%20Start%20Error%20/">Docker Start Permission denied 启动报错</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="前言："><a href="#前言：" class="headerlink" title="前言："></a>前言：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Docker 是一个开源的应用容器引擎，让开发者可以打包他们的应用以及依赖包到一个可移植的镜像中，然后发布到任何流行的 Linux或Windows 机器上，也可以实现虚拟化。容器是完全使用沙箱机制，相互之间不会有任何接口。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>Docker启动jenkins 后报错</p>
+<p><img src="/img/image-20210610094554094.png" alt="image-20210610094554094"></p>
+<p>原因：</p>
+<p>volume对应的持久化文件夹所有者不是jenkins。</p>
+<p>解决方案：</p>
+<p>修改权限</p>
+<p>1、docker-compose.yaml 添加  user</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">&#x27;3&#x27;</span> </span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">jenkins:</span> </span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">jenkins</span> </span><br><span class="line">    <span class="attr">image:</span> <span class="string">jenkins/jenkins</span> </span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span> </span><br><span class="line">    <span class="attr">ports:</span> </span><br><span class="line">      <span class="bullet">-</span> <span class="number">8888</span><span class="string">:8080</span> </span><br><span class="line">      <span class="bullet">-</span> <span class="number">50000</span><span class="string">:50000</span> </span><br><span class="line">    <span class="attr">volumes:</span> </span><br><span class="line">      <span class="bullet">-</span> <span class="string">/data/jenkins/jenkins_home:/var/jenkins_home</span> </span><br><span class="line">      <span class="bullet">-</span> <span class="string">/etc/localtime:/etc/localtime:ro</span></span><br></pre></td></tr></table></figure>
+
+<p>3、docker</p>
+<p>启动添加  -u root</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> jenkins docker run -d \</span></span><br><span class="line"><span class="bash">-u root \</span></span><br><span class="line"><span class="bash">-p 8888:8080 \</span></span><br><span class="line"><span class="bash">-p 50001:50000 \</span></span><br><span class="line"><span class="bash">-v /home/jenkins_home2:/var/jenkins_home</span> </span><br><span class="line">--name jenkins jenkins/jenkins </span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://hzxiao.top/2021/06/10/Docker/Docker%20Jenkins%20Start%20Error%20/" data-id="ckr489q67000r8we5cynr1zwv" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="Docker-Docker/Docker Jenkins Install" class="article article-type-Docker" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/06/10/Docker/Docker%20Jenkins%20Install/" class="article-date">
+  <time datetime="2021-06-10T01:32:38.000Z" itemprop="datePublished">2021-06-10</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Docker/">Docker</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/06/10/Docker/Docker%20Jenkins%20Install/">Docker Jenkins 部署</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="前言："><a href="#前言：" class="headerlink" title="前言："></a>前言：</h3><p>Docker 是一个开源的应用容器引擎，让开发者可以打包他们的应用以及依赖包到一个可移植的镜像中，然后发布到任何流行的 Linux或Windows 机器上，也可以实现虚拟化。容器是完全使用沙箱机制，相互之间不会有任何接口。</p>
+<p>Jenkins是一个开源的、提供友好操作界面的持续集成(CI)工具，起源于Hudson（Hudson是商用的），主要用于持续、自动的构建/测试软件项目、监控外部任务的运行。Jenkins用Java语言编写，可在Tomcat等流行的servlet容器中运行，也可独立运行。通常与版本管理工具(SCM)、构建工具结合使用。常用的版本控制工具有SVN、Git，构建工具有Maven、Ant、Gradle等。</p>
+<p>Docker Jenkins的安装，镜像选择，jenkins和jenkins\jenkins都是官方的镜像，前者已经不维护了，推荐使用后者。</p>
+<p>PS: 如果不能联网，从能联网的主机拉取镜像，然后保存，导入</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> docker pull jenkins/jenkins</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> docker save jenkins/jenkins &gt; jenkins.tar</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 上传到服务器</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> docker load &lt; jenkins.tar</span></span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 搜索jenkins镜像</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> docker search jenkins</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 拉取镜像</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> docker pull jenkins/jenkins</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看镜像</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> docker images</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 创建本地挂载目录</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> mkdir /data/jenkins_home</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 创建jenkins容器</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> </span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/image-20210610093418120.png" alt="image-20210610093418120"></p>
+<p>创建jenkins容器</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> docker-compose up -d</span></span><br></pre></td></tr></table></figure>
+
+<p>通过Docker-compose 编排，推荐。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">&#x27;3&#x27;</span> </span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">jenkins:</span> </span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">jenkins</span> </span><br><span class="line">    <span class="attr">image:</span> <span class="string">jenkins/jenkins</span> </span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span> </span><br><span class="line">    <span class="attr">user:</span> <span class="string">root</span></span><br><span class="line">    <span class="attr">ports:</span> </span><br><span class="line">      <span class="bullet">-</span> <span class="number">8888</span><span class="string">:8080</span> </span><br><span class="line">      <span class="bullet">-</span> <span class="number">50000</span><span class="string">:50000</span> </span><br><span class="line">    <span class="attr">volumes:</span> </span><br><span class="line">      <span class="bullet">-</span> <span class="string">/data/jenkins/jenkins_home:/var/jenkins_home</span> </span><br><span class="line">      <span class="bullet">-</span> <span class="string">/etc/localtime:/etc/localtime:ro</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/image-20210610095012160.png" alt="image-20210610095012160"></p>
+<p>容器创建并启动成功，留意控制台，拷贝密码登陆的时候需要使用。</p>
+<p>打开浏览器访问</p>
+<p><a target="_blank" rel="noopener" href="http://127.0.0.1:8888/">http://127.0.0.1:8888/</a> 耐心等待~</p>
+<p><img src="/img/image-20210610100944217.png" alt="image-20210610100944217"></p>
+<p>输入控制台打印出来的密码</p>
+<p><img src="/img/image-20210610101039130.png" alt="image-20210610101039130"></p>
+<p>等待~</p>
+<p><img src="/img/image-20210610101139009.png" alt="image-20210610101139009"></p>
+<p>注意选择这个，暂时先不安装推荐插件</p>
+<p><img src="/img/image-20210610101215178.png" alt="image-20210610101215178"></p>
+<p>取消所有推荐插件</p>
+<p><img src="/img/image-20210610101257754.png" alt="image-20210610101257754"></p>
+<p>创建账号</p>
+<p><img src="/img/image-20210610101328613.png" alt="image-20210610101328613"></p>
+<p>默认</p>
+<p><img src="/img/image-20210610101400815.png" alt="image-20210610101400815"></p>
+<p>jenkins配置完成</p>
+<p><img src="/img/image-20210610101414301.png" alt="image-20210610101414301"></p>
+<p>插件下载</p>
+<p><img src="/img/image-20210610101510306.png" alt="image-20210610101510306"></p>
+<p><img src="/img/image-20210610101756747.png" alt="image-20210610101756747"></p>
+<p><img src="/img/image-20210610101809178.png" alt="image-20210610101809178"></p>
+<p><img src="/img/image-20210610101823106.png" alt="image-20210610101823106"></p>
+<p>配置Update Site的url</p>
+<p><a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/jenkins/updates/update-center.json">https://mirrors.tuna.tsinghua.edu.cn/jenkins/updates/update-center.json</a></p>
+<p><img src="/img/image-20210610101950966.png" alt="image-20210610101950966"></p>
+<p>然后到jenkins挂载目录下</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 具体目录根据自己挂载的情况</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> /data/jenkins/jenkins_home/updates</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 备份配置</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> cp default.json default.json.bak</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 替换url</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> sudo sed -i <span class="string">&#x27;s/http:\/\/updates.jenkins-ci.org\/download/https:\/\/mirrors.tuna.tsinghua.edu.cn\/jenkins/g&#x27;</span> default.json &amp;&amp; sudo sed -i <span class="string">&#x27;s/http:\/\/www.google.com/https:\/\/www.baidu.com/g&#x27;</span> default.json</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 重新启动容器</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> docker restart jenkins</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>重新登陆jenkins，感受光速下载吧~</p>
+<p>选择插件</p>
+<p><img src="/img/image-20210610102455639.png" alt="image-20210610102455639"></p>
+<p>等待插件下载完成</p>
+<p><img src="/img/image-20210610102545275.png" alt="image-20210610102545275"></p>
+<p>勾选插件下载完成自动重启</p>
+<p><img src="/img/image-20210610102605215.png" alt="image-20210610102605215"></p>
+<p>部署完成~</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://hzxiao.top/2021/06/10/Docker/Docker%20Jenkins%20Install/" data-id="ckr489q66000o8we5bcg16gnj" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="Docker-Docker/Docker Offline Install" class="article article-type-Docker" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/06/09/Docker/Docker%20Offline%20Install/" class="article-date">
   <time datetime="2021-06-09T08:06:38.000Z" itemprop="datePublished">2021-06-09</time>
 </a>
     
@@ -84,7 +351,156 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2021/06/09/Docker%20HelloWorld/">Docker 快速入门 使用</a>
+      <a class="article-title" href="/2021/06/09/Docker/Docker%20Offline%20Install/">Docker 离线安装</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="前言："><a href="#前言：" class="headerlink" title="前言："></a>前言：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Docker 是一个开源的应用容器引擎，让开发者可以打包他们的应用以及依赖包到一个可移植的镜像中，然后发布到任何流行的 Linux或Windows 机器上，也可以实现虚拟化。容器是完全使用沙箱机制，相互之间不会有任何接口。</span><br><span class="line"></span><br><span class="line">一般服务器都是隔绝外网，所以离线安装docker的情况更多</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><h3 id="离线安装"><a href="#离线安装" class="headerlink" title="离线安装"></a>离线安装</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># a. 新能一个能联网的机子下载rpm包 </span><br><span class="line"># yum install xxx --downloadonly --downloaddir &#x2F;root&#x2F;soft </span><br><span class="line"># b. 拷贝到服务器上 </span><br><span class="line"># c. 执行安装命令 </span><br><span class="line"># rpm -ivh *.rpm --force --nodeps </span><br></pre></td></tr></table></figure></li>
+<li><h3 id="在线安装"><a href="#在线安装" class="headerlink" title="在线安装"></a>在线安装</h3></li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">a. 卸载旧版本 </span><br><span class="line">\# yum remove docker \ </span><br><span class="line">docker-client \ </span><br><span class="line">docker-client-latest \ </span><br><span class="line">docker-common \ </span><br><span class="line">docker-latest \ </span><br><span class="line">docker-latest-logrotate \ </span><br><span class="line">docker-logrotate \ </span><br><span class="line">docker-engine </span><br><span class="line"></span><br><span class="line">b. 安装工具 </span><br><span class="line">\# yum install -y yum-utils \ </span><br><span class="line">device-mapper-persistent-data \ </span><br><span class="line">lvm2 </span><br><span class="line">c. 配置软件仓库 </span><br><span class="line">\# yum-config-manager \ </span><br><span class="line">--add-repo \ </span><br><span class="line">http:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;docker-ce&#x2F;linux&#x2F;centos&#x2F;docker-ce.repo </span><br><span class="line">d. 安装 </span><br><span class="line">\# yum install docker-ce docker-ce-cli containerd.io </span><br></pre></td></tr></table></figure>
+
+<p>3、Docker服务启动</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost install]# systemctl start docker</span><br><span class="line">[root@localhost install]# docker ps</span><br><span class="line">CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES</span><br><span class="line">[root@localhost install]# docker version</span><br><span class="line">Client: Docker Engine - Community</span><br><span class="line"> Version:           19.03.11</span><br><span class="line"> API version:       1.40</span><br><span class="line"> Go version:        go1.13.10</span><br><span class="line"> Git commit:        42e35e61f3</span><br><span class="line"> Built:             Mon Jun  1 09:13:48 2020</span><br><span class="line"> OS&#x2F;Arch:           linux&#x2F;amd64</span><br><span class="line"> Experimental:      false</span><br><span class="line"></span><br><span class="line">Server: Docker Engine - Community</span><br><span class="line"> Engine:</span><br><span class="line">  Version:          19.03.11</span><br><span class="line">  API version:      1.40 (minimum version 1.12)</span><br><span class="line">  Go version:       go1.13.10</span><br><span class="line">  Git commit:       42e35e61f3</span><br><span class="line">  Built:            Mon Jun  1 09:12:26 2020</span><br><span class="line">  OS&#x2F;Arch:          linux&#x2F;amd64</span><br><span class="line">  Experimental:     false</span><br><span class="line"> containerd:</span><br><span class="line">  Version:          1.2.13</span><br><span class="line">  GitCommit:        7ad184331fa3e55e52b890ea95e65ba581ae3429</span><br><span class="line"> runc:</span><br><span class="line">  Version:          1.0.0-rc10</span><br><span class="line">  GitCommit:        dc9208a3303feef5b3839f4323d9beb36df0a9dd</span><br><span class="line"> docker-init:</span><br><span class="line">  Version:          0.18.0</span><br><span class="line">  GitCommit:        fec3683</span><br><span class="line">[root@localhost install]# </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>4、加入开机启动</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost install]# systemctl enable docker.service </span><br><span class="line">Created symlink from &#x2F;etc&#x2F;systemd&#x2F;system&#x2F;multi-user.target.wants&#x2F;docker.service to &#x2F;usr&#x2F;lib&#x2F;systemd&#x2F;system&#x2F;docker.service.</span><br><span class="line">[root@localhost install]# </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>5、Docker三剑客 docker-compose 安装</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost docker]# cp docker-compose-Linux-x86_64 &#x2F;usr&#x2F;local&#x2F;bin&#x2F;docker-compose</span><br><span class="line">[root@localhost docker]# chmod +x &#x2F;usr&#x2F;local&#x2F;bin&#x2F;docker-compose</span><br><span class="line">[root@localhost docker]# ln -s &#x2F;usr&#x2F;local&#x2F;bin&#x2F;docker-compose &#x2F;usr&#x2F;bin&#x2F;docker-compose</span><br><span class="line">[root@localhost docker]# docker-compose -version</span><br><span class="line">docker-compose version 1.26.0-rc3, build 46118bc5</span><br><span class="line">[root@localhost docker]# </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://hzxiao.top/2021/06/09/Docker/Docker%20Offline%20Install/" data-id="ckr489q69000z8we5c2rh10dv" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="Docker-Docker/Docker Container" class="article article-type-Docker" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/06/09/Docker/Docker%20Container/" class="article-date">
+  <time datetime="2021-06-09T08:06:38.000Z" itemprop="datePublished">2021-06-09</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Docker/">Docker</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/06/09/Docker/Docker%20Container/">Docker 常用容器</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="前言："><a href="#前言：" class="headerlink" title="前言："></a>前言：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Docker 是一个开源的应用容器引擎，让开发者可以打包他们的应用以及依赖包到一个可移植的镜像中，然后发布到任何流行的 Linux或Windows 机器上，也可以实现虚拟化。容器是完全使用沙箱机制，相互之间不会有任何接口。</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">1. mysql docker run --name mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 -d mysql:5.7.19 </span><br><span class="line"></span><br><span class="line">2. nacos docker run --env MODE=standalone --name nacos -d -p 8848:8848 nacos/nacos-server </span><br><span class="line"></span><br><span class="line">3. redis </span><br><span class="line">docker run -itd --name redis -p 6379:6379 redis --appendonly yes --requirepass &quot;123456&quot; </span><br><span class="line"></span><br><span class="line">4. sentinel docker run --name sentinel -d -p 8858:8858 -d bladex/sentinel- dashboard </span><br><span class="line"></span><br><span class="line">5. postgresql docker run -d -p 5432:5432 --name postgresql -v pgdata:/home/pgsql/data -e POSTGRES_PASSWORD=123456 postgres </span><br><span class="line"></span><br><span class="line">6. pgadmin4 docker run -d -p 8087:80 --name pgadmin4 -e PGADMIN_DEFAULT_EMAIL=fjhzxiao@163.com -e PGADMIN_DEFAULT_PASSWORD=123456 dpage/pgadmin4 登陆用户名 fjhzxiao@163.com/123456 </span><br><span class="line"></span><br><span class="line">7. geoserver docker run -d -p 8080:8080 -v /home/geoserver/data_dir:/opt/geoserver/data_dir kartoza/geoserver </span><br><span class="line"></span><br><span class="line">8. jenkins docker run -d -p 8888:8080 -p 50001:50000 -v /home/jenkins_home2:/var/jenkins_home --name jenkins2 jenkins/jenkins </span><br><span class="line"></span><br><span class="line">docker-compose </span><br><span class="line">version: &#x27;3&#x27; </span><br><span class="line">services:</span><br><span class="line">jenkins: container_name: jenkins </span><br><span class="line">image: jenkins/jenkins </span><br><span class="line">restart: always </span><br><span class="line">ports: - 8888:8080 - 50000:50000 </span><br><span class="line">volumes: - /root/jenkins/jenkins_home:/var/jenkins_home - /etc/localtime:/etc/localtime:ro </span><br><span class="line"></span><br><span class="line">9. portainer </span><br><span class="line">docker-compose.yaml</span><br><span class="line">  version: &#x27;3&#x27; </span><br><span class="line">  services: </span><br><span class="line">  portainer: </span><br><span class="line">  image: portainer/portainer </span><br><span class="line">  ports: - &quot;9000:9000&quot; </span><br><span class="line">  volumes: </span><br><span class="line">    - &quot;/home/portainer/data:/data&quot; </span><br><span class="line">    - &quot;/var/run/docker.sock:/var/run/docker.sock&quot; </span><br><span class="line"></span><br><span class="line">10. nexus docker-compose.yaml version: &#x27;3&#x27; services: nexus: image: sonatype/nexus3 ports: - 8081:8081 volumes:</span><br><span class="line">- /root/nexus/nexus-data:/nexus-data</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://hzxiao.top/2021/06/09/Docker/Docker%20Container/" data-id="ckr489q63000g8we57c2m8dez" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="Nginx Vue-Vue/Vue Nginx Refresh 404" class="article article-type-Nginx Vue" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/06/09/Vue/Vue%20Nginx%20Refresh%20404/" class="article-date">
+  <time datetime="2021-06-09T08:06:38.000Z" itemprop="datePublished">2021-06-09</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Nginx-Vue/">Nginx Vue</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/06/09/Vue/Vue%20Nginx%20Refresh%20404/">Vue Nginx 服务器 地址刷新 404</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="前言："><a href="#前言：" class="headerlink" title="前言："></a>前言：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">今天vue项目build后，放到nginx的html目录下，浏览器刷新404</span><br></pre></td></tr></table></figure>
+
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># nginx转发路由添加 try_files $uri $uri&#x2F; &#x2F;index.html;</span><br><span class="line"></span><br><span class="line">location &#x2F; &#123;</span><br><span class="line">        root &#x2F;usr&#x2F;share&#x2F;nginx&#x2F;html;</span><br><span class="line">        try_files $uri $uri&#x2F; &#x2F;index.html;</span><br><span class="line">        index index.html;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://hzxiao.top/2021/06/09/Vue/Vue%20Nginx%20Refresh%20404/" data-id="ckr489q6m00218we5dk2kd18y" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nginx-Vue/" rel="tag">Nginx Vue</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="Docker-Docker/Docker HelloWorld" class="article article-type-Docker" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/06/09/Docker/Docker%20HelloWorld/" class="article-date">
+  <time datetime="2021-06-09T08:06:38.000Z" itemprop="datePublished">2021-06-09</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Docker/">Docker</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/06/09/Docker/Docker%20HelloWorld/">Docker 快速入门 使用</a>
     </h1>
   
 
@@ -133,7 +549,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://hzxiao.top/2021/06/09/Docker%20HelloWorld/" data-id="ckpro4lfs0000ake563oz7zw4" class="article-share-link">Share</a>
+      <a data-url="http://hzxiao.top/2021/06/09/Docker/Docker%20HelloWorld/" data-id="ckr489q64000j8we5cwrt6o1a" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li></ul>
@@ -145,53 +561,9 @@
 
 
   
-    <article id="Nginx Vue-Vue Nginx Refresh 404" class="article article-type-Nginx Vue" itemscope itemprop="blogPost">
+    <article id="Spring-SpringBoot/SpringBoot Profile" class="article article-type-Spring" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2021/06/09/Vue%20Nginx%20Refresh%20404/" class="article-date">
-  <time datetime="2021-06-09T08:06:38.000Z" itemprop="datePublished">2021-06-09</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Nginx-Vue/">Nginx Vue</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/06/09/Vue%20Nginx%20Refresh%20404/">Vue Nginx 服务器 地址刷新 404</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="前言："><a href="#前言：" class="headerlink" title="前言："></a>前言：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">今天vue项目build后，放到nginx的html目录下，浏览器刷新404</span><br></pre></td></tr></table></figure>
-
-<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># nginx转发路由添加 try_files $uri $uri&#x2F; &#x2F;index.html;</span><br><span class="line"></span><br><span class="line">location &#x2F; &#123;</span><br><span class="line">        root &#x2F;usr&#x2F;share&#x2F;nginx&#x2F;html;</span><br><span class="line">        try_files $uri $uri&#x2F; &#x2F;index.html;</span><br><span class="line">        index index.html;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://hzxiao.top/2021/06/09/Vue%20Nginx%20Refresh%20404/" data-id="ckpro5j8e000fake5gz3w2k7o" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nginx-Vue/" rel="tag">Nginx Vue</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="Spring-SpringBoot Profile" class="article article-type-Spring" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/05/17/SpringBoot%20Profile/" class="article-date">
+    <a href="/2021/05/17/SpringBoot/SpringBoot%20Profile/" class="article-date">
   <time datetime="2021-05-17T04:45:38.000Z" itemprop="datePublished">2021-05-17</time>
 </a>
     
@@ -207,7 +579,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2021/05/17/SpringBoot%20Profile/">Spring 静态属性加载配置</a>
+      <a class="article-title" href="/2021/05/17/SpringBoot/SpringBoot%20Profile/">Spring 静态属性加载配置</a>
     </h1>
   
 
@@ -226,7 +598,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://hzxiao.top/2021/05/17/SpringBoot%20Profile/" data-id="ckory311k00034oe5fiki79ty" class="article-share-link">Share</a>
+      <a data-url="http://hzxiao.top/2021/05/17/SpringBoot/SpringBoot%20Profile/" data-id="ckr489q6i001p8we5hagqf0v1" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Spring/" rel="tag">Spring</a></li></ul>
@@ -238,9 +610,9 @@
 
 
   
-    <article id="SpringBoot-Spring Config Static Properties" class="article article-type-SpringBoot" itemscope itemprop="blogPost">
+    <article id="SpringBoot-SpringBoot/Spring Config Static Properties" class="article article-type-SpringBoot" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2021/05/17/Spring%20Config%20Static%20Properties/" class="article-date">
+    <a href="/2021/05/17/SpringBoot/Spring%20Config%20Static%20Properties/" class="article-date">
   <time datetime="2021-05-17T01:45:38.000Z" itemprop="datePublished">2021-05-17</time>
 </a>
     
@@ -256,7 +628,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2021/05/17/Spring%20Config%20Static%20Properties/">SpringBoot 多环境 配置文件 profile</a>
+      <a class="article-title" href="/2021/05/17/SpringBoot/Spring%20Config%20Static%20Properties/">SpringBoot 多环境 配置文件 profile</a>
     </h1>
   
 
@@ -293,339 +665,10 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://hzxiao.top/2021/05/17/Spring%20Config%20Static%20Properties/" data-id="ckos3x00o0003o8e5gcej6xsr" class="article-share-link">Share</a>
+      <a data-url="http://hzxiao.top/2021/05/17/SpringBoot/Spring%20Config%20Static%20Properties/" data-id="ckr489q6f001h8we51pshdqmp" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SpringBoot/" rel="tag">SpringBoot</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="Java-Java8 Stream Page Iterator" class="article article-type-Java" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/05/13/Java8%20Stream%20Page%20Iterator/" class="article-date">
-  <time datetime="2021-05-13T08:06:38.000Z" itemprop="datePublished">2021-05-13</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Java/">Java</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/05/13/Java8%20Stream%20Page%20Iterator/">Java List 分页 遍历</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id=""><a href="#" class="headerlink" title=""></a></h3><h3 id="前言：-有这样一个需求，一次性查询出所有数据，然后分页遍历数据"><a href="#前言：-有这样一个需求，一次性查询出所有数据，然后分页遍历数据" class="headerlink" title="前言： 有这样一个需求，一次性查询出所有数据，然后分页遍历数据"></a>前言： 有这样一个需求，一次性查询出所有数据，然后分页遍历数据</h3><ol>
-<li><p>java stream skip，  limit </p>
-<h4 id="通过skip跳过数据，limit限制访问的数据，外层套一个页码循环，实现分页遍历List"><a href="#通过skip跳过数据，limit限制访问的数据，外层套一个页码循环，实现分页遍历List" class="headerlink" title="通过skip跳过数据，limit限制访问的数据，外层套一个页码循环，实现分页遍历List"></a>通过skip跳过数据，limit限制访问的数据，外层套一个页码循环，实现分页遍历List</h4></li>
-</ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StreamExample</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">		<span class="comment">/**</span></span><br><span class="line"><span class="comment">     * List分页遍历</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">page</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        List&lt;Integer&gt; is = Arrays.asList(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>, <span class="number">11</span>, <span class="number">12</span>);</span><br><span class="line">        <span class="comment">// 每页的数据</span></span><br><span class="line">        <span class="keyword">int</span> size = <span class="number">5</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> page = <span class="number">0</span>; page &lt; (is.size() - <span class="number">1</span>) / size + <span class="number">1</span>; page++) &#123;</span><br><span class="line">            is.stream().skip(page * size).limit(size).forEach(System.out::println);</span><br><span class="line">            System.out.println();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://hzxiao.top/2021/05/13/Java8%20Stream%20Page%20Iterator/" data-id="ckom75mdp0000q8e5al0f9cxn" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/" rel="tag">Java</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="JavaScript-JavaScript iterable" class="article article-type-JavaScript" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/04/29/JavaScript%20iterable/" class="article-date">
-  <time datetime="2021-04-29T01:39:38.000Z" itemprop="datePublished">2021-04-29</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/JavaScript/">JavaScript</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/04/29/JavaScript%20iterable/">JavaScript 循环 iterable</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="聊聊js中的循环，数组遍历"><a href="#聊聊js中的循环，数组遍历" class="headerlink" title="聊聊js中的循环，数组遍历"></a>聊聊js中的循环，数组遍历</h2><p>代码的组成无非就是，顺序，选择，循环。其中最重要的就是循环语句。</p>
-<p>在js中，循环主要有，for, while。在es6里有一些新的方式。</p>
-<h3 id="1、传统循环-for"><a href="#1、传统循环-for" class="headerlink" title="1、传统循环 for"></a>1、传统循环 for</h3><p>优点：方便获取数据下标。</p>
-<p>缺点：容易存在变量污染。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>];</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; arr.length; i++) &#123;</span><br><span class="line">  <span class="built_in">console</span>.info(arr[i]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// logs 1,2,3,4,5</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h3 id="2、while-与for类似，这里不赘述"><a href="#2、while-与for类似，这里不赘述" class="headerlink" title="2、while 与for类似，这里不赘述"></a>2、while 与for类似，这里不赘述</h3><h3 id="3、Arrays对象内置的-forEach，调用方法，针对每一个元素执行。"><a href="#3、Arrays对象内置的-forEach，调用方法，针对每一个元素执行。" class="headerlink" title="3、Arrays对象内置的  forEach，调用方法，针对每一个元素执行。"></a>3、Arrays对象内置的  forEach，调用方法，针对每一个元素执行。</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>];  </span><br><span class="line">arr.forEach(<span class="function">(<span class="params">value, index, array</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// value 当前遍历值</span></span><br><span class="line">  <span class="comment">// index 下标</span></span><br><span class="line">  <span class="comment">// array 数组对象</span></span><br><span class="line">  <span class="built_in">console</span>.info(value);</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// logs 1,2,3,4,5</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="4、some-every"><a href="#4、some-every" class="headerlink" title="4、some, every"></a>4、some, every</h3><p>在 for 循环中可以通过break进行提前结束循环。continue结束当前循环。</p>
-<p>在es6中， some，every 本质是判断所有元素是否符合条件， some 只要有一个返回true 就结束循环。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// some，在满足条件后就会结束循环，every则相反，有一个不满足则结束</span></span><br><span class="line"><span class="keyword">let</span> arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>];</span><br><span class="line">arr.some(<span class="function"><span class="params">v</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.info(v);</span><br><span class="line">  <span class="keyword">return</span> v &gt; <span class="number">2</span>;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// logs 1,2,3</span></span><br></pre></td></tr></table></figure>
-
-<p>every 只要有一个返回 false就结束循环。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>];</span><br><span class="line">arr.every(<span class="function"><span class="params">v</span> =&gt;</span> &#123; </span><br><span class="line">  <span class="built_in">console</span>.info(v);</span><br><span class="line">  <span class="keyword">return</span> v &lt; <span class="number">3</span>;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// logs 1,2,3</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h3 id="5、map-转换，遍历每一个元素，做对应的转换，返回结果"><a href="#5、map-转换，遍历每一个元素，做对应的转换，返回结果" class="headerlink" title="5、map 转换，遍历每一个元素，做对应的转换，返回结果"></a>5、map 转换，遍历每一个元素，做对应的转换，返回结果</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>];</span><br><span class="line">arr.map(<span class="function"><span class="params">v</span> =&gt;</span> v + <span class="number">1</span>).forEach(<span class="function"><span class="params">v</span> =&gt;</span> <span class="built_in">console</span>.info(v));</span><br><span class="line"><span class="comment">// logs 2,3,4,5,6,7</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="6、filter-过滤，过滤出符合条件的项"><a href="#6、filter-过滤，过滤出符合条件的项" class="headerlink" title="6、filter 过滤，过滤出符合条件的项"></a>6、filter 过滤，过滤出符合条件的项</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>];</span><br><span class="line">arr.filter(<span class="function"><span class="params">v</span> =&gt;</span> v &gt; <span class="number">3</span>).forEach(<span class="function"><span class="params">v</span> =&gt;</span> <span class="built_in">console</span>.info(v));</span><br><span class="line"><span class="comment">// logs 4,5,6</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="7、for-in-、for-of-遍历"><a href="#7、for-in-、for-of-遍历" class="headerlink" title="7、for..in 、for..of  遍历"></a>7、for..in 、for..of  遍历</h3><p> for..in 迭代自身属性，不建议用于遍历数组。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> obj = &#123;</span><br><span class="line">  a: <span class="number">1</span>,</span><br><span class="line">  b: <span class="number">2</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">let</span> k <span class="keyword">in</span> obj) &#123;</span><br><span class="line">  <span class="built_in">console</span>.info(k);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// logs a,b</span></span><br></pre></td></tr></table></figure>
-
-<p> for..of 在可迭代对象（包括 Array，Map，Set，String，TypedArray，arguments 对象等遍历。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> arr = [<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>];</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">let</span> v <span class="keyword">of</span> arr) &#123;</span><br><span class="line">  <span class="built_in">console</span>.info(v);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// logs a,b,c</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> iterable = <span class="string">&quot;abc&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> v <span class="keyword">of</span> iterable) &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(v);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// logs a,b,c</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://hzxiao.top/2021/04/29/JavaScript%20iterable/" data-id="cko2fghyn0003oce543a1ctkn" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="Kettle-Kettle InputUpdate" class="article article-type-Kettle" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/04/27/Kettle%20InputUpdate/" class="article-date">
-  <time datetime="2021-04-27T09:03:38.000Z" itemprop="datePublished">2021-04-27</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Kettle/">Kettle</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/04/27/Kettle%20InputUpdate/">Kettle 插入/更新(Kettle Insert/Update)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Kettle Input/Update</p>
-<p>插入与更新，判断目标数据与原数据一致，强制更新。</p>
-<p>与同步最大的区别是，原数据如果删除，目标数据不会删除。</p>
-<p>1、自行创建 source,target 表</p>
-<p>2、拖入 TableInput 配置数据库连接，SQL</p>
-<p><img src="/img/image-20210427114151451.png" alt="image-20210427114151451"></p>
-<p>3、拖入 Input/Update</p>
-<p><img src="/img/image-20210427114146642.png" alt="image-20210427114146642"></p>
-<p>4、执行 Kettle发现，source，target 保持一致，source删除，target并不会删除</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://hzxiao.top/2021/04/27/Kettle%20InputUpdate/" data-id="cknzhbfn70008xse5dq3rdxpu" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Kettle/" rel="tag">Kettle</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="Kettle-Kettle Data Sync" class="article article-type-Kettle" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/04/27/Kettle%20Data%20Sync/" class="article-date">
-  <time datetime="2021-04-27T02:03:38.000Z" itemprop="datePublished">2021-04-27</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Kettle/">Kettle</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/04/27/Kettle%20Data%20Sync/">Kettle 数据同步(Kettle Synchronize after merge)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Kettle 数据同步</p>
-<p>同步的概念，原数据表（数据变化，新增，修改，删除），目标数据表（数据不变化），经过kettle处理，保持目标数据表与原数据表一致。</p>
-<p>1、新建数据表 user_source, user_target   </p>
-<p>id作为主键，其他字段若干</p>
-<p>2、Kettle 拖入两个 Table Input，修改名称为 Source， Target</p>
-<p><img src="/img/image-20210427111123181.png" alt="image-20210427111123181"></p>
-<p>配置数据库连接地址，编写SQL，分别查询 user_source, user_target   </p>
-<p>3、拖入合并（比较）</p>
-<p>从Joins 拖入 Merge rows（diff）</p>
-<p><img src="/img/image-20210427112308832.png" alt="image-20210427112308832"></p>
-<p>注意： 原始数据，以及对比数据，不能弄错。</p>
-<p>Reference rows origin 需要被同步的表</p>
-<p>Compare rows origin 会变更数据的原始表</p>
-<p>Flag fieldname 系统默认，添加数据差异字段（identical， new，changed， deleted）不要修改</p>
-<p>Keys to match 比较数据是否相同的字段</p>
-<p>Values to compare 需要更新的字段</p>
-<p><img src="/img/image-20210427111732584.png" alt="image-20210427111732584"></p>
-<p>添加日志可以查看合并后的数据</p>
-<p>4、同步数据</p>
-<p>拖入 Synchronize after merge 连接 Merge rows</p>
-<p><img src="/img/image-20210427111903879.png" alt="image-20210427111903879"></p>
-<p>配置同步</p>
-<p>General 基本配置</p>
-<p><img src="/img/image-20210427112107717.png" alt="image-20210427112107717"></p>
-<p>Advanced</p>
-<p><img src="/img/image-20210427111955219.png" alt="image-20210427111955219"></p>
-<p>配置完成，即可执行。</p>
-<p>测试，修改  user_source  里面的任意数据，执行 Kettle 转换，user_target 数据会修改，与 user_source 同步。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://hzxiao.top/2021/04/27/Kettle%20Data%20Sync/" data-id="ckom75mdz0004q8e51elq7jm9" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Kettle/" rel="tag">Kettle</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="helloworld-Avue Dict" class="article article-type-helloworld" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/04/19/Avue%20Dict/" class="article-date">
-  <time datetime="2021-04-19T08:06:38.000Z" itemprop="datePublished">2021-04-19</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Hexo/">Hexo</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/04/19/Avue%20Dict/">HelloWorld Hexo</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="前言："><a href="#前言：" class="headerlink" title="前言："></a>前言：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Empty</span><br></pre></td></tr></table></figure>
-
-<h3 id="标题1"><a href="#标题1" class="headerlink" title="标题1"></a>标题1</h3><h4 id="子标题1"><a href="#子标题1" class="headerlink" title="子标题1"></a>子标题1</h4><h4 id="子标题2"><a href="#子标题2" class="headerlink" title="子标题2"></a>子标题2</h4><h3 id="标题2"><a href="#标题2" class="headerlink" title="标题2"></a>标题2</h3><h4 id="子标题1-1"><a href="#子标题1-1" class="headerlink" title="子标题1"></a>子标题1</h4><h4 id="子标题2-1"><a href="#子标题2-1" class="headerlink" title="子标题2"></a>子标题2</h4><h3 id="标题3"><a href="#标题3" class="headerlink" title="标题3"></a>标题3</h3>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://hzxiao.top/2021/04/19/Avue%20Dict/" data-id="ckqrw99n60000ase56t3j4rzi" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="java-UReport2 Note1" class="article article-type-java" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/04/16/UReport2%20Note1/" class="article-date">
-  <time datetime="2021-04-16T01:24:38.000Z" itemprop="datePublished">2021-04-16</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/ureport2/">ureport2</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/04/16/UReport2%20Note1/">UReport2 自定义存储器无效</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="定义一个内存存储器"><a href="#定义一个内存存储器" class="headerlink" title="定义一个内存存储器"></a>定义一个内存存储器</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.hzxiao.third.ureport2.file;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.bstek.ureport.provider.report.ReportFile;</span><br><span class="line"><span class="keyword">import</span> com.bstek.ureport.provider.report.ReportProvider;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.io.IOUtils;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Component;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.InputStream;</span><br><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"><span class="keyword">import</span> java.util.stream.Collectors;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> ZhenXiao.Huang</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@since</span> 2021年4月16日</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MomoryReportProvider</span> <span class="keyword">implements</span> <span class="title">ReportProvider</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> List&lt;ReportFile&gt; files = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Map&lt;String, String&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> InputStream <span class="title">loadReport</span><span class="params">(String file)</span> </span>&#123;</span><br><span class="line">        file = getFileName(file);</span><br><span class="line">        <span class="keyword">return</span> IOUtils.toInputStream(file);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">deleteReport</span><span class="params">(String file)</span> </span>&#123;</span><br><span class="line">        files = files.stream().filter(v -&gt; !v.equals(file)).collect(Collectors.toList());</span><br><span class="line">        map.remove(file);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;ReportFile&gt; <span class="title">getReportFiles</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> files;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">saveReport</span><span class="params">(String file, String content)</span> </span>&#123;</span><br><span class="line">        ReportFile rf = <span class="keyword">new</span> ReportFile(getFileName(file), <span class="keyword">new</span> Date());</span><br><span class="line">        files.add(rf);</span><br><span class="line">        map.put(getFileName(file), content);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;MomoryReportProvider&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">disabled</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getPrefix</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;momory:&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> file</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getFileName</span><span class="params">(String file)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (file.startsWith(getPrefix())) &#123;</span><br><span class="line">            <span class="keyword">return</span> file.substring(getPrefix().length(), file.length());</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> file;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>注意：getPrefix 每个必须唯一！！系统默认已经有 file: 。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.bstek.ureport.console.designer;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 省略大量代码</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Jacky.gao</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@since</span> 2017年1月25日</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DesignerServletAction</span> <span class="keyword">extends</span> <span class="title">RenderPageServletAction</span> </span>&#123;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 省略大量代码</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">saveReportFile</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">		<span class="comment">// 省略大量代码</span></span><br><span class="line">		<span class="keyword">for</span>(ReportProvider provider:reportProviders)&#123;</span><br><span class="line">      <span class="comment">// 储存器按照prefix进行获取</span></span><br><span class="line">			<span class="keyword">if</span>(file.startsWith(provider.getPrefix()))&#123;</span><br><span class="line">				targetReportProvider=provider;</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 省略大量代码</span></span><br><span class="line">  </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>分析源码可得，所有的存储器按照prefix进行配置。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://hzxiao.top/2021/04/16/UReport2%20Note1/" data-id="ckns820j4000070e5f8g7grxh" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ureport2/" rel="tag">ureport2</a></li></ul>
 
     </footer>
   </div>
@@ -649,7 +692,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Avue/">Avue</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kettle/">Kettle</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Nginx-Vue/">Nginx Vue</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/SpringBoot/">SpringBoot</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/hexo/">hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/ureport2/">ureport2</a></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Avue/">Avue</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kettle/">Kettle</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Nginx-Vue/">Nginx Vue</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/SpringBoot/">SpringBoot</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/UReport2/">UReport2</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/hexo/">hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/ureport2/">ureport2</a></li></ul>
     </div>
   </div>
 
@@ -659,7 +702,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Avue/" rel="tag">Avue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kettle/" rel="tag">Kettle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx-Vue/" rel="tag">Nginx Vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NodeJs/" rel="tag">NodeJs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/" rel="tag">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringBoot/" rel="tag">SpringBoot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ureport2/" rel="tag">ureport2</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Avue/" rel="tag">Avue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kettle/" rel="tag">Kettle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx-Vue/" rel="tag">Nginx Vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NodeJs/" rel="tag">NodeJs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/" rel="tag">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringBoot/" rel="tag">SpringBoot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UReport2/" rel="tag">UReport2</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ureport2/" rel="tag">ureport2</a></li></ul>
     </div>
   </div>
 
@@ -669,7 +712,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Avue/" style="font-size: 13.33px;">Avue</a> <a href="/tags/Docker/" style="font-size: 20px;">Docker</a> <a href="/tags/Hexo/" style="font-size: 13.33px;">Hexo</a> <a href="/tags/Java/" style="font-size: 13.33px;">Java</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/Kettle/" style="font-size: 16.67px;">Kettle</a> <a href="/tags/Nginx-Vue/" style="font-size: 10px;">Nginx Vue</a> <a href="/tags/NodeJs/" style="font-size: 10px;">NodeJs</a> <a href="/tags/Spring/" style="font-size: 10px;">Spring</a> <a href="/tags/SpringBoot/" style="font-size: 10px;">SpringBoot</a> <a href="/tags/ureport2/" style="font-size: 13.33px;">ureport2</a>
+      <a href="/tags/Avue/" style="font-size: 17.5px;">Avue</a> <a href="/tags/Docker/" style="font-size: 20px;">Docker</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/Java/" style="font-size: 12.5px;">Java</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/Kettle/" style="font-size: 15px;">Kettle</a> <a href="/tags/Nginx-Vue/" style="font-size: 10px;">Nginx Vue</a> <a href="/tags/NodeJs/" style="font-size: 10px;">NodeJs</a> <a href="/tags/Spring/" style="font-size: 10px;">Spring</a> <a href="/tags/SpringBoot/" style="font-size: 12.5px;">SpringBoot</a> <a href="/tags/UReport2/" style="font-size: 10px;">UReport2</a> <a href="/tags/ureport2/" style="font-size: 12.5px;">ureport2</a>
     </div>
   </div>
 
@@ -691,23 +734,23 @@
       <ul>
         
           <li>
-            <a href="/2021/07/12/Java%20LocalDate/">Java LocalDate</a>
+            <a href="/2021/07/15/UReport2/UReport2%20DataSource/">UReport2 表达式获取数据集</a>
           </li>
         
           <li>
-            <a href="/2021/07/05/Avue%20Template/">Avue Dict 字典配置</a>
+            <a href="/2021/07/14/Avue/Avue%20Detail%20Table/">Avue 关联表</a>
           </li>
         
           <li>
-            <a href="/2021/07/02/Kettle%20Oracle2Mysql/">Kettle 数据迁移</a>
+            <a href="/2021/07/14/Avue/Avue%20All%20Api/">Avue Template</a>
           </li>
         
           <li>
-            <a href="/2021/06/26/Hexo%20HelloWorld/">Avue</a>
+            <a href="/2021/07/14/Avue/Avue%20Dict/">Avue 表格所有配置</a>
           </li>
         
           <li>
-            <a href="/2021/06/25/Docker%20Start%20Error/">Docker Start Error Docker 启动失败</a>
+            <a href="/2021/07/14/Avue/Avue%20Mini%20Crud/">Avue 最小表格模板</a>
           </li>
         
       </ul>
